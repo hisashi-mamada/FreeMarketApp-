@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Address;
+use Illuminate\Support\Facades\Auth;
+
+class AddressController extends Controller
+{
+    public function edit($item_id)
+    {
+        $user = Auth::user();
+        $address = $user->addresses()->latest()->first();
+        return view('items.address', compact('address', 'item_id'));
+    }
+
+    public function update(Request $request, $item_id)
+    {
+        $validated = $request->validate([
+            'postal_code' => 'required|string',
+            'prefecture'  => 'required|string',
+            'city'        => 'required|string',
+            'block'       => 'required|string',
+            'building'    => 'nullable|string',
+        ]);
+
+        $user = Auth::user();
+
+
+        $address = $user->addresses()->latest()->first();
+        if ($address) {
+            $address->update($validated);
+        } else {
+            $user->addresses()->create($validated);
+        }
+
+        return redirect("/purchase/{$item_id}")->with('message', '住所を更新しました');
+    }
+}

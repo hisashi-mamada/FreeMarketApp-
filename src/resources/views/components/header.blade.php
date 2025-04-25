@@ -1,0 +1,30 @@
+<header class="toppage-header">
+    <div class="toppage-header-icon">
+        <img src="{{ asset('images/logo.svg') }}" alt="COACHTECHロゴ" height="40">
+    </div>
+
+    <div class="toppage-header-search">
+        <div class="search-box">
+            <input type="text" placeholder="なにをお探しですか？">
+        </div>
+    </div>
+
+    <nav class="toppage-header-nav">
+        @guest
+        <a href="{{ route('login') }}" class="toppage-nav-link">ログイン</a>
+        @endguest
+
+        @auth
+        <form method="POST" action="{{ route('logout') }}" class="toppage-nav-form">
+            @csrf
+            <button type="submit" class="toppage-nav-link logout-button">
+                ログアウト
+            </button>
+        </form>
+        @endauth
+
+        <a href="/mypage" class="toppage-nav-link">マイページ</a>
+        <a href="/sell" class="toppage-nav-button">出品</a>
+    </nav>
+
+</header>
