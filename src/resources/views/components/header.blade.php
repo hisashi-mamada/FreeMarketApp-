@@ -4,10 +4,12 @@
     </div>
 
     <div class="toppage-header-search">
-        <div class="search-box">
-            <input type="text" placeholder="なにをお探しですか？">
-        </div>
+        <form method="GET" action="{{ route('items.index') }}" class="search-box">
+            <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="なにをお探しですか？">
+            <button type="submit">検索</button>
+        </form>
     </div>
+
 
     <nav class="toppage-header-nav">
         @guest

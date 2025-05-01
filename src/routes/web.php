@@ -22,7 +22,7 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/', [ItemController::class, 'index']);
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -45,9 +45,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sell', [ItemController::class, 'store'])->name('items.store');
 });
 Route::middleware(['auth'])->group(function () {
-    Route::get('/mypage', [MypageController::class, 'index']);
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 });
 Route::middleware(['auth'])->group(function () {
-    Route::get('/mypage/profile', [ProfileController::class, 'edit']);
-    Route::post('/mypage/profile', [ProfileController::class, 'update']);
+    Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+Route::middleware('auth')->group(function () {
+    Route::post('/favorites/{product_id}', [ItemController::class, 'addFavorite'])->name('favorites.add');
+
+    Route::post('/favorites/{product_id}/remove', [ItemController::class, 'removeFavorite'])->name('favorites.remove');
 });

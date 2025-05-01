@@ -125,42 +125,47 @@ body {
     background-color: #fff0f0;
 }
 
----------------------/*index.blade用*/----------------------
+--------/*index用*/---------------
+
 .toppage-list {
     max-width: 1512px;
     width: 100%;
     height: 47px;
-    border-bottom: 2px solid #5F5F5F !important;
-    display: flex;
     align-items: center;
     margin: 40px auto 0;
-    padding-bottom: 10px;
+    padding-bottom: 10px 0;
+}
+
+.toppage-list a {
+    display: inline-block;
+    width: 155px;
+    height: auto;
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 0;
 }
 
 .toppage-list a:first-child {
-    width: 155px;
-    height: 40px;
-    font-family: Inter;
-    font-weight: 700;
-    font-size: 24px;
+    margin-left: 90px;
     color: #FF0000;
-    line-height: 40px;
-    text-align: right;
-    text-decoration: none;
-    margin-left: 110px;
+
 }
 
 .toppage-list a:last-child {
-    width: 155px;
-    height: 40px;
-    font-family: Inter;
-    font-weight: 700;
-    font-size: 24px;
+    margin-left: 50px;
     color: #5F5F5F;
-    line-height: 40px;
-    text-align: right;
-    text-decoration: none;
-    margin-left: 30px;
+}
+
+.toppage-list-border {
+    max-width: 1512px;
+    width: 100%;
+    height: 2px;
+    background-color: #5F5F5F;
+    margin: 0 auto;
 }
 
 .products-row {
@@ -255,10 +260,27 @@ main {
         overflow: hidden;
 }
 
+.product-image {
+    position: relative;
+}
+
 .product-image img{
     width: 600px;
     height:600px;
     object-fit: cover;
+}
+
+.sold-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: rgba(255, 85, 85, 0.9);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 5px;
+    z-index: 10;
 }
 
 .product-description-area {
@@ -363,7 +385,7 @@ main {
 .auth-content form{
     display: flex;
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 5px;
     align-items: center;
 }
 
@@ -391,7 +413,7 @@ main {
     border: 1px solid #5F5F5F;
     font-size: 20px;
     box-sizing: border-box;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     margin-top: 5px;
 }
 
@@ -632,7 +654,6 @@ select {
     height: 186px;
     border: 1px dotted #ccc;
     margin: 30px auto;
-    padding: 20px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -661,3 +682,269 @@ select {
 .custom-file-label:hover {
     background-color: #FFECEC;
 }
+
+.exhibited-product-detail-area{
+    width: 680px;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+
+.exhibited-product-product-detail{
+    margin-bottom: 20px;
+}
+
+.exhibited-product-product-detail .form-section-title{
+    font-weight: 700;
+    font-size: 30px;
+    border-bottom: 1px solid #5F5F5F;
+    padding-bottom: 10px;
+}
+
+.exhibited-product-category-area{
+    margin-top: 30px;
+}
+
+.exhibited-product-category-area .form-label{
+    display: block;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.category-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-tag{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.category-tag input[type="radio"] {
+    display: none;
+}
+
+.category-tag span {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid #FF5555;
+    border-radius: 20px;
+    font-size: 16px;
+    color: #FF5555;
+    transition: 0.3s;
+}
+
+.category-tag input[type="radio"]:checked+span {
+    background-color: #FF5555;
+    color: #FFFFFF;
+}
+
+.exhibited-product-status {
+    width: 680px;
+    margin: 40px auto 0;
+}
+
+.exhibited-product-status .form-label {
+    display: block;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.form-select.status-select {
+    width: 680px;
+    height: 50px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    margin-left: 0;
+}
+
+.exhibited-product-detail-area {
+    margin-bottom: 20px;
+}
+
+.exhibited-product-detail-area .form-section-title {
+    font-weight: 700;
+    font-size: 30px;
+    border-bottom: 1px solid #5F5F5F;
+    padding-bottom: 10px;
+}
+
+.exhibited-product-detail-area .form-label{
+    display: block;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.exhibited-product-detail-area .form-input{
+    width: 680px;
+    height: 45px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    margin-left: 0;
+}
+
+.exhibited-product-detail-area .form-textarea{
+    width: 680px;
+    height: 125px;
+    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+.price-input-wrapper {
+    position: relative;
+}
+
+.price-input-wrapper .yen-mark {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #555;
+}
+
+.price-input-wrapper .form-input {
+    padding-left: 10px;
+    width: 680px;
+}
+
+.action-bar{
+    display: flex;
+    font-weight: 700;
+    font-size: 24px;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 60px;
+    margin-left: 10px;
+}
+
+.action-bar .form-submit-button{
+    width: 700px;
+    height: 50px;
+    background-color: #FF5555;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+}
+
+-----------------/*mypage専用*/-------------------
+
+.mypage-container {
+    padding: 30px;
+}
+
+.user-info {
+    width: 1017px;
+    height: 150px;
+    margin: 30px auto 10px auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.user-name {
+    width: 250px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 60px;
+}
+
+.user-name h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.0;
+    letter-spacing: 0%;
+    text-align: center;
+    margin: 0;
+}
+
+.user-name h2 {
+    margin-left: 20px;
+    font-size: 36px;
+}
+
+.edit-profile {
+    width: 310px;
+    height: 59px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-profile-button {
+    width: 100%;
+    height: 100%;
+    font-weight: 700;
+    font-size: 18px;
+    color: #FF5555;
+    background: #ffffff;
+    border: 2px solid #FF5555;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 59px;
+    text-decoration: none;
+}
+
+
+---------------/*profile専用*/--------------
+
+main .auth-content .profile-user-info {
+    width: 100%;
+    height: 150px;
+    margin: 30px auto 10px auto;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.profile-user-info .user-image {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 350px;
+}
+
+.profile-user-info .profile-image-button {
+    width: 179px;
+    height: 49px;
+    border-radius: 10px;
+    border: 2px solid #FF5555;
+    color: #FF5555;
+    font-weight: 700;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    left: 550px;
+    top: -90px;
+}
+
+

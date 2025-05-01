@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AddressRequest;
 
 class AddressController extends Controller
 {
@@ -15,18 +16,11 @@ class AddressController extends Controller
         return view('items.address', compact('address', 'item_id'));
     }
 
-    public function update(Request $request, $item_id)
+    public function update(AddressRequest $request, $item_id)
     {
-        $validated = $request->validate([
-            'postal_code' => 'required|string',
-            'prefecture'  => 'required|string',
-            'city'        => 'required|string',
-            'block'       => 'required|string',
-            'building'    => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $user = Auth::user();
-
 
         $address = $user->addresses()->latest()->first();
         if ($address) {
@@ -37,4 +31,5 @@ class AddressController extends Controller
 
         return redirect("/purchase/{$item_id}")->with('message', '住所を更新しました');
     }
+}
 }

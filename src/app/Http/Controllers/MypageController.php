@@ -8,23 +8,21 @@ use App\Models\Profile;
 
 class MypageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $profile = $user->profile;
         $tab = $request->query('tab');
 
+        $products = [];
+        $purchases = [];
+
         if ($tab === 'buy') {
             $purchases = $user->purchases()->with('purchaseDetails.product')->latest()->get();
-
-            return view('mypage.buy', compact('purchases', 'profile', 'tab'));
-        }
-
-        if ($tab === 'sell') {
+        } elseif ($tab === 'sell') {
             $products = $user->products()->with('category')->latest()->get();
-            return view('mypage.sell', compact('products', 'profile', 'tab'));
         }
 
-        return view('mypage.index', compact('user', 'profile', 'tab'));
+        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases'));
     }
 }

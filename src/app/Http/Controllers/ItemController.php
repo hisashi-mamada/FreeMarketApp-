@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
     public function index(Request $request)
     {
         $tab = $request->query('tab');
+        $keyword = $request->query('keyword');
 
         if ($tab === 'mylist') {
             $user = Auth::user();
@@ -19,11 +21,21 @@ class ItemController extends Controller
                 return redirect('/login');
             }
 
-            $items = $user->favorites()->with('category', 'user')->latest()->get();
-            return view('items.mylist', compact('items', 'tab'));
+            $query = $user->favorites()->with('category', 'user');
+        } else {
+            $query = Product::with('category', 'user');
         }
 
-        $items = Product::with('category', 'user')->latest()->get();
+        if (!empty($keyword)) {
+            $query->where('name', 'like', '%' . $keyword . '%');
+        }
+
+        $items = $query->latest()->get();
+
+        if ($tab === 'mylist') {
+            return view('items.index', compact('items', 'tab'));
+        }
+
         return view('items.index', compact('items', 'tab'));
     }
 
@@ -40,19 +52,31 @@ class ItemController extends Controller
         return view('items.sell', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(ExhibitionRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:1',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+        $validated = $request->validated();
 
         $validated['user_id'] = Auth::id();
 
         Product::create($validated);
 
         return redirect('/')->with('message', '商品を出品しました！');
+    }
+
+    public function addFavorite($product_id)
+    {
+        $user = Auth::user();
+        $user->favorites()->attach($product_id);
+
+        return back()->with('message', 'マイリストに追加しました');
+    }
+
+
+    public function removeFavorite($product_id)
+    {
+        $user = Auth::user();
+        $user->favorites()->detach($product_id);
+
+        return back()->with('message', 'マイリストから削除しました');
     }
 }
