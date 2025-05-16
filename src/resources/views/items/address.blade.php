@@ -10,13 +10,13 @@
 
         @csrf
         <label for="postal_code">郵便番号</label>
-        <input type="text" id="postal_code" name="postal_code">
+        <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $address->postal_code ?? '') }}">
 
         <label for="address">住所</label>
-        <input type="text" id="address" name="address">
+        <input type="text" id="address" name="address" value="{{ old('address', $address->prefecture ?? '') }}">
 
         <label for="building">建物名</label>
-        <input type="text" id="building" name="building">
+        <input type="text" id="building" name="building" value="{{ old('building', $address->building ?? '') }}">
 
         <button type="submit" class="register-btn">更新する</button>
     </form>

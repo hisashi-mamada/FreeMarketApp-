@@ -26,6 +26,6 @@ class RegisterController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect('/')->with('message', '会員登録が完了しました');
+        return redirect('/mypage/profile')->with('message', '会員登録が完了しました');
     }
 }

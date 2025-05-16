@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
@@ -20,9 +21,11 @@ class MypageController extends Controller
         if ($tab === 'buy') {
             $purchases = $user->purchases()->with('purchaseDetails.product')->latest()->get();
         } elseif ($tab === 'sell') {
-            $products = $user->products()->with('category')->latest()->get();
+            $products = $user->products()->latest()->get();
         }
 
-        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases'));
+        $allCategories = Category::pluck('name', 'id')->toArray();
+
+        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases', 'allCategories'));
     }
 }

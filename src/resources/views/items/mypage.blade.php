@@ -7,10 +7,18 @@
 
     <div class="user-info">
         <div class="user-image">
-            <img src="{{ asset('images/default_user.png') }}" alt="ユーザー画像">
+            @php
+            $userImage = isset($profile) && $profile->image_path
+            ? asset('storage/' . $profile->image_path)
+            : asset('images/default_user.png');
+            @endphp
+
+            <img src="{{ asset('storage/' . $profile->image_path) }}" alt="ユーザー画像">
+
         </div>
+
         <div class="user-name">
-            <h2>ユーザー名</h2>
+            <h2>{{ $profile && $profile->nickname ? $profile->nickname : $user->name }}</h2>
         </div>
         <div class="edit-profile">
             <a href="{{ route('profile.edit') }}" class="edit-profile-button">プロフィールを編集</a>
@@ -30,7 +38,7 @@
         @foreach($purchases as $purchase)
         @foreach($purchase->purchaseDetails as $detail)
         <div class="product-card">
-            <img src="{{ asset('storage/' . $detail->product->image_path) }}" alt="商品画像">
+            <img src="{{ asset($detail->product->image_url) }}" alt="商品画像">
             <p class="product-name">{{ $detail->product->name }}</p>
         </div>
         @endforeach
@@ -38,11 +46,22 @@
         @else
         @foreach($products as $product)
         <div class="product-card">
-            <img src="{{ asset('storage/' . $product->image_path) }}" alt="商品画像">
+            <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像">
             <p class="product-name">{{ $product->name }}</p>
+
+            {{-- カテゴリ表示 --}}
+            @php
+            $categoryIds = explode(',', $product->category_id);
+            @endphp
+            <p class="product-category">
+                @foreach($categoryIds as $id)
+                {{ $allCategories[$id] ?? '不明' }}@if (!$loop->last)、@endif
+                @endforeach
+            </p>
         </div>
         @endforeach
         @endif
+
     </div>
 
 </div>

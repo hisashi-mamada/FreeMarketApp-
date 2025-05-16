@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ExhibitionRequest;
+use App\Http\Requests\CommentRequest;
 
 class ItemController extends Controller
 {
@@ -23,14 +26,15 @@ class ItemController extends Controller
 
             $query = $user->favorites()->with('category', 'user');
         } else {
-            $query = Product::with('category', 'user');
+            $query = Product::with('category', 'user')
+                ->whereNull('user_id');
         }
 
         if (!empty($keyword)) {
             $query->where('name', 'like', '%' . $keyword . '%');
         }
 
-        $items = $query->latest()->get();
+        $items = $query->orderBy('id')->get();
 
         if ($tab === 'mylist') {
             return view('items.index', compact('items', 'tab'));
@@ -42,9 +46,13 @@ class ItemController extends Controller
 
     public function show($item_id)
     {
-        $product = Product::with('user', 'category')->findOrFail($item_id);
+        $product = Product::with('user', 'category', 'comments', 'favoritedUsers')
+            ->withCount('favoritedUsers')
+            ->findOrFail($item_id);
+
         return view('items.show', compact('product'));
     }
+
 
     public function create()
     {
@@ -56,11 +64,30 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        $validated['user_id'] = Auth::id();
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('product_images', 'public');
+        }
 
-        Product::create($validated);
+        $validated['category_id'] = isset($validated['category_ids'])
+            ? implode(',', $validated['category_ids'])
+            : null;
 
-        return redirect('/')->with('message', '商品を出品しました！');
+        unset($validated['category_ids']);
+
+        Product::create([
+            'user_id'     => Auth::id(),
+            'name'        => $validated['name'],
+            'description' => $validated['description'],
+            'price'       => $validated['price'],
+            'condition'   => $validated['condition'],
+            'image_url'   => $imagePath,
+            'is_sold'     => false,
+            'category_id' => $validated['category_id'],
+        ]);
+
+
+        return redirect('/mypage?tab=sell')->with('message', '商品を出品しました！');
     }
 
     public function addFavorite($product_id)
@@ -78,5 +105,29 @@ class ItemController extends Controller
         $user->favorites()->detach($product_id);
 
         return back()->with('message', 'マイリストから削除しました');
+    }
+
+    public function toggleFavorite(Product $product)
+    {
+        $user = auth()->user();
+
+        if ($product->isFavoritedBy($user)) {
+            $product->favoritedUsers()->detach($user->id);
+        } else {
+            $product->favoritedUsers()->attach($user->id);
+        }
+
+        return redirect()->route('items.show', ['item_id' => $product->id]);
+    }
+
+    public function addComment(CommentRequest $request, $product_id)
+    {
+        Comment::create([
+            'user_id' => Auth::id(),
+            'product_id' => $product_id,
+            'body' => $request->input('comment'),
+        ]);
+
+        return back()->with('message', 'コメントを投稿しました');
     }
 }

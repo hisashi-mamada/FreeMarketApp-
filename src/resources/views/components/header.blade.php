@@ -1,6 +1,6 @@
 <header class="toppage-header">
     <div class="toppage-header-icon">
-        <img src="{{ asset('images/logo.svg') }}" alt="COACHTECHロゴ" height="40">
+        <img src="{{ asset('images/logo.svg') }}" alt="COACHTECHロゴ">
     </div>
 
     <div class="toppage-header-search">

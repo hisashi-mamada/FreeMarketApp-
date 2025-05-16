@@ -12,7 +12,7 @@
         <div class="exhibited-products-image">
             <label class="form-label-image">商品画像</label>
             <label for="image-upload" class="custom-file-label">画像を選択する</label>
-            <input type="file" id="image-upload" name="image" class="form-image-input" hidden>
+            <input type="file" id="image-upload" name="image" class="form-image-input">
         </div>
 
 
@@ -27,12 +27,13 @@
                 <div class="category-tags">
                     @foreach($categories as $category)
                     <label class="category-tag">
-                        <input type="radio" name="category_id" value="{{ $category->id }}">
+                        <input type="checkbox" name="category_ids[]" value="{{ $category->id }}" class="category-checkbox">
                         <span>{{ $category->name }}</span>
                     </label>
                     @endforeach
                 </div>
             </div>
+
 
         </div>
 

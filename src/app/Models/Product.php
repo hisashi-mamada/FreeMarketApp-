@@ -36,7 +36,7 @@ class Product extends Model
 
     public function isSold()
     {
-        return $this->purchaseDetail()->exists();
+        return $this->is_sold;
     }
 
     public function favoritedBy()
@@ -52,5 +52,15 @@ class Product extends Model
     public function favoritedUsers()
     {
         return $this->belongsToMany(User::class, 'favorites');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }
