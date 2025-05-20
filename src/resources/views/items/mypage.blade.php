@@ -49,7 +49,6 @@
             <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像">
             <p class="product-name">{{ $product->name }}</p>
 
-            {{-- カテゴリ表示 --}}
             @php
             $categoryIds = explode(',', $product->category_id);
             @endphp

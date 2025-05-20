@@ -589,12 +589,15 @@ main {
     width: 65%;
     padding-right: 30px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .purchase-left hr {
     width: 90%;
     max-width: 100%;
-    margin: 30px 0;
+    margin: 5px 0;
     border: 1px solid #000;
     box-sizing: border-box;
 }
@@ -602,7 +605,7 @@ main {
 .product-summary {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     gap: 20px;
 }
 
@@ -631,27 +634,31 @@ main {
 }
 
 .payment-method {
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-left: 0;
+    margin-top: 10px;
 }
 
 .payment-method,
 .shipping-address {
-    margin: 0 0 50px 0;
+    margin: 0 0 30px 0;
 }
 
 .payment-method h3,
 .shipping-address h3 {
     font-size: 18px;
     margin: 0 0 30px 0;
+    min-width: 100px;
 }
 
 select {
     width: 300px;
     padding: 8px;
     font-size: 16px;
-    margin-top: 20px;
-    margin-left: 60px;
+    margin:0;
 }
 
 .shipping-address a {
@@ -685,6 +692,11 @@ select {
 .purchase-right {
     width: 30%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 30px;
 }
 
 .order-summary {
@@ -728,7 +740,6 @@ select {
 }
 
 
-
 .purchase-btn {
     width: 440px;
     height: 50px;
@@ -740,7 +751,45 @@ select {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 50px;
+    position: relative;
+    left: 955px;
+    top: -380px;
 }
+
+.success-message {
+    text-align: center;
+    padding: 50px;
+}
+
+.success-message h1 {
+    color: #38c172;
+    font-size: 48px;
+    margin-bottom:30px;
+}
+
+.success-message p {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.success-message a {
+    background-color: #38c172;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.success-message a:hover {
+    background-color: #2e9e5e;
+    text-decoration: none;
+}
+
 -----------------------/*sell.blade.php専用*/-------------------------
 
 .sell-container {

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RegisterController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ProfileController;
+use App\Actions\Fortify\CreateNewUser;
+use App\Http\Controllers\StripeWebhookController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +34,11 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'show'])->name('register.show');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 Route::post('/login', [LoginController::class, 'login']);
+
+Route::get('/purchase/success', function () {
+    return view('items.purchase_success');
+})->name('purchase.success');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
@@ -70,8 +78,40 @@ Route::get('/email-test', function () {
     return 'ログインしてください。';
 });
 
-
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect('/profile');
-})->middleware(['signed'])->name('verification.verify');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get('/profile', function () {
+    $user = Auth::user();
+
+    $profile = $user->profile()->firstOrCreate([
+        'nickname'     => '',
+        'phone'        => '',
+        'postal_code'  => '',
+        'address'      => '',
+        'building'     => '',
+        'image_path'   => 'images/default_user.png',
+    ]);
+
+    return view('items.profile', [
+        'profile' => $user->profile,
+    ]);
+})->middleware('auth');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware(['auth'])->name('verification.notice');
+
+Route::post('/register', function (Request $request) {
+    $creator = app(CreateNewUser::class);
+    $user = $creator->create($request->all());
+
+    Auth::login($user);
+    return redirect('/email/verify');
+})->name('register.post');
+
+Route::post('/purchase/checkout/{item_id}', [\App\Http\Controllers\PurchaseController::class, 'checkout'])->name('purchase.checkout');
+
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('stripe.webhook');

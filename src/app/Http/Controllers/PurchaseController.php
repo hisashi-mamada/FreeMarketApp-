@@ -9,6 +9,8 @@ use App\Http\Requests\PurchaseRequest;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
 use Illuminate\Support\Facades\Log;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 
 class PurchaseController extends Controller
@@ -48,5 +50,37 @@ class PurchaseController extends Controller
         ]);
 
         return redirect('/')->with('message', '購入が完了しました！');
+    }
+
+    public function checkout(Request $request, $item_id)
+    {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $product = Product::findOrFail($item_id);
+
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => [
+                        'name' => $product->name,
+                    ],
+                    'unit_amount' => (int) $product->price,
+
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => 'http://host.docker.internal/purchase/success',
+
+            'cancel_url' => url('/'),
+            'metadata' => [
+                'product_id' => $product->id,
+                'user_id' => Auth::id(),
+            ],
+        ]);
+
+        return redirect($session->url);
     }
 }

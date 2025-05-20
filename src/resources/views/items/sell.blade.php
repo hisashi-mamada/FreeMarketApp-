@@ -15,7 +15,6 @@
             <input type="file" id="image-upload" name="image" class="form-image-input">
         </div>
 
-
         <div class="exhibited-product-detail-area">
 
             <div class="exhibited-product-product-detail">
@@ -33,8 +32,6 @@
                     @endforeach
                 </div>
             </div>
-
-
         </div>
 
         <div class="exhibited-product-status">

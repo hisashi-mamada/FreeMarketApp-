@@ -6,7 +6,8 @@
 <main>
     <div class="toppage-list">
         <a href="{{ url('/') }}" class="{{ request('tab') !== 'mylist' ? 'active' : '' }}">おすすめ</a>
-        <a href="{{ url('/?tab=mylist') }}" class="{{ request('tab') === 'mylist' ? 'active' : '' }}">マイリスト</a>
+        <a href="{{ url('/?tab=mylist&keyword=' . request('keyword')) }}"
+            class="{{ request('tab') === 'mylist' ? 'active' : '' }}">マイリスト</a>
     </div>
 
     <div class="toppage-list-border"></div>
@@ -19,9 +20,12 @@
             <a href="{{ url('/item/' . $item->id) }}">
                 <div class="product-image">
                     <img src="{{ $item->image_url }}" alt="商品画像">
+                    @auth
                     @if ($item->isSold())
                     <span class="sold-label">sold</span>
                     @endif
+                    @endauth
+
                 </div>
                 <p class="product-name">{{ $item->name }}</p>
             </a>
@@ -37,7 +41,6 @@
         <p>マイリストに商品がありません。</p>
         @endforelse
 
-
         @else
 
         @foreach ($items as $item)
@@ -45,9 +48,11 @@
             <a href="{{ url('/item/' . $item->id) }}">
                 <div class="product-image">
                     <img src="{{ $item->image_url }}" alt="商品画像">
+                    @auth
                     @if ($item->isSold())
                     <span class="sold-label">sold</span>
                     @endif
+                    @endauth
                 </div>
                 <p class="product-name">{{ $item->name }}</p>
             </a>

@@ -12,7 +12,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        $profile = $user->profile ?? new \App\Models\Profile(); // 空のProfileで初期化
+        $profile = $user->profile ?? new \App\Models\Profile();
         return view('items.profile', compact('profile'));
     }
 
@@ -22,7 +22,6 @@ class ProfileController extends Controller
         $user = Auth::user();
         $validated = $request->validated();
 
-        // 画像保存
         $imagePath = optional($user->profile)->image_path;
 
         if ($request->hasFile('image')) {
@@ -30,8 +29,6 @@ class ProfileController extends Controller
             \Log::info('画像がアップロードされました: ' . $imagePath);
         }
 
-
-        // 必須追加項目
         $validated += [
             'phone'       => '09012345678',
             'nickname'    => $validated['name'],
