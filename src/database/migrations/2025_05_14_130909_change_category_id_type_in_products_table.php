@@ -17,7 +17,6 @@ class ChangeCategoryIdTypeInProductsTable extends Migration
         DB::statement('ALTER TABLE products DROP FOREIGN KEY products_category_id_foreign');
         Schema::table('products', function (Blueprint $table) {
 
-            // category_id カラムを文字列に変更
             $table->string('category_id')->change();
         });
     }

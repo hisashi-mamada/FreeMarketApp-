@@ -22,7 +22,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_01_watch.jpg',
                 'condition' => '良好',
                 'category_id' => '1,5,12',
-                'brand_name' => 'アルマーニ',
+                'brand' => 'アルマーニ',
                 'user_id' => null,
             ],
             [
@@ -32,7 +32,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_02_hdd.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'category_id' => '2,3',
-                'brand_name' => 'HDD',
+                'brand' => 'HDD',
                 'user_id' => null,
             ],
             [
@@ -42,7 +42,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_03_onion.jpg',
                 'condition' => 'やや傷や汚れあり',
                 'category_id' => '4,10',
-                'brand_name' => 'アイラブイメージ',
+                'brand' => 'アイラブイメージ',
                 'user_id' => null,
             ],
             [
@@ -52,7 +52,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_04_shoes.jpg',
                 'condition' => '状態が悪い',
                 'category_id' => '1,5,6,12',
-                'brand_name' => 'レザーシューズ',
+                'brand' => 'レザーシューズ',
                 'user_id' => null,
             ],
             [
@@ -62,7 +62,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_05_notepc.jpg',
                 'condition' => '良好',
                 'category_id' => '2,4,5',
-                'brand_name' => 'ラップトップ',
+                'brand' => 'ラップトップ',
                 'user_id' => null,
             ],
             [
@@ -72,7 +72,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_06_mic.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'category_id' => '2,8,13,14',
-                'brand_name' => 'ミュージックマイク',
+                'brand' => 'ミュージックマイク',
                 'user_id' => null,
             ],
             [
@@ -82,7 +82,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_07_bag.jpg',
                 'condition' => 'やや傷や汚れあり',
                 'category_id' => '1,4,6,12',
-                'brand_name' => 'ヤスイバックヤスイバック',
+                'brand' => 'ヤスイバックヤスイバック',
                 'user_id' => null,
             ],
             [
@@ -92,7 +92,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_08_tumbler.jpg',
                 'condition' => '状態が悪い',
                 'category_id' => '3,4,5,6,10',
-                'brand_name' => 'スーベニア',
+                'brand' => 'スーベニア',
                 'user_id' => null,
             ],
             [
@@ -102,7 +102,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_09_coffee.jpg',
                 'condition' => '良好',
                 'category_id' => '3,10',
-                'brand_name' => 'グリンダ―',
+                'brand' => 'グリンダ―',
                 'user_id' => null,
             ],
             [
@@ -112,7 +112,7 @@ class ProductsTableSeeder extends Seeder
                 'image_url' => 'storage/images/product_10_make.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'category_id' => '1,4,6,11,12',
-                'brand_name' => '女子力',
+                'brand' => '女子力',
                 'user_id' => null,
             ],
         ];

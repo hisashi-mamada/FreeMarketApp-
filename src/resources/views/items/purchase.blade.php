@@ -43,9 +43,10 @@
                 <p>配送先住所が登録されていません。配送先を登録してください。</p>
                 @endif
             </div>
-        </div>
 
-        <hr class="purchase-divider">
+            <hr class="purchase-divider">
+
+        </div>
 
         <div class="purchase-right">
             <div class="order-summary">

@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+
 
 class PurchaseRequest extends FormRequest
 {
@@ -25,7 +28,13 @@ class PurchaseRequest extends FormRequest
     {
         return [
             'payment_method' => ['required', 'string'],
-            'address_id' => ['required', 'integer'],
+            'address_id' => [
+                'required',
+                'integer',
+                Rule::exists('addresses', 'id')->where(function ($query) {
+                    $query->where('user_id', Auth::id());
+                }),
+            ],
         ];
     }
 }

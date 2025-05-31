@@ -17,8 +17,8 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::updateOrCreate(
-            ['email' => 'test@example.com'], // 検索条件
-            [ // 更新 or 作成内容
+            ['email' => 'test@example.com'],
+            [
                 'name' => 'テストユーザー',
                 'password' => Hash::make('password123'),
             ]

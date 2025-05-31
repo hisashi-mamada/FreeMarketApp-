@@ -28,6 +28,7 @@ body {
 .toppage-header-icon img {
     height: 100%;
     object-fit: contain;
+    cursor: pointer;
 }
 
 .toppage-header-search {
@@ -1003,21 +1004,30 @@ select {
 }
 
 .price-input-wrapper {
-    position: relative;
+    display: flex;
+    align-items: baseline;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    max-width: 680px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .price-input-wrapper .yen-mark {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-right: 8px;
     font-size: 20px;
     color: #555;
+    white-space: nowrap;
 }
 
 .price-input-wrapper .form-input {
-    padding-left: 10px;
-    width: 680px;
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    padding: 5px 0;
+    background-color: transparent;
 }
 
 .action-bar{
@@ -1090,7 +1100,7 @@ select {
     height: 59px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .edit-profile-button {
@@ -1105,6 +1115,29 @@ select {
     text-align: center;
     line-height: 59px;
     text-decoration: none;
+}
+
+.product-grid {
+    width: 100%;
+    max-width: 1500px;
+    height: auto;
+    margin: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 40px 30px;
+}
+
+.product-card {
+    width: 290px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 
@@ -1158,120 +1191,295 @@ main .auth-content .profile-user-info {
 
 /* タブレット（768px〜850px）対応 */
 
-@media screen and (max-width: 850px) {
-    .purchase-wrapper {
-        flex-direction: column;
-        padding: 20px 10px;
-    }
+@media screen and (max-width: 850px) and (min-width: 768px)
+    {
+        .products-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
 
-    .purchase-left,
-    .purchase-right {
-        width: 100%;
-        margin: 0 auto;
-    }
+        .product-box {
+            width: 90%;
+        }
 
-    .purchase-right {
-        margin-top: 20px;
-    }
+        .toppage-header {
+            display: grid;
+            grid-template-rows: auto auto;
+            gap: 10px;
+            padding: 10px;
+            background-color: #000;
+            height: 130px;
+        }
 
-    .product-image {
-        width: 100%;
-        height: auto;
-    }
+        .toppage-header-icon {
+            max-width: 120px;
+            height: auto;
+        }
 
-    .order-summary table {
-        width: 100%;
-        font-size: 14px;
-    }
+        .toppage-header-search {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
 
-                .toppage-header {
-                    display: flex;
-                    align-items: center;
-                    flex-wrap: nowrap;
-                    justify-content: flex-start;
-                    padding: 10px;
-                    gap: 10px;
-                }
+        .search-box {
+            display: flex;
+            width: 50%;
+            height: 40%;
+            position: relative;
+            left: 50px;
+            top: -40px;
+        }
+        .search-box input {
+            width: 75%;
+            padding: 5px;
+            font-size: 14px;
+        }
 
-                .toppage-header-icon img {
-                    height: 20px;
-                }
+        .search-box button {
+            width: 20%;
+            font-size: 14px;
+            padding: 6px;
+        }
 
-                .toppage-header-search {
-                    flex: 1;
-                    max-width: 100px;
-                }
+        .toppage-header-nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 100px;
+            flex-wrap: wrap;
+        }
 
-                .search-box {
-                    display: flex;
-                    width: 100%;
-                    gap: 4px;
-                }
+        .toppage-nav-link,
+        .toppage-nav-button {
+            font-size: 14px;
+            padding: 8px 12px;
+            white-space: nowrap;
+            position: relative;
+            top: -40px;
+        }
+        .toppage-nav-button {
+            font-size: 14px;
+            padding: 0px 10px;
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 4px;
+            white-space: nowrap;
+            position: relative;
+            top: -40px;
+        }
 
-                .search-box input[type="text"] {
-                    flex: 1;
-                    font-size: 12px;
-                    padding: 4px;
-                }
+        .auth-header {
+            height: 80px;
+            padding: 5px 10px;
+        }
 
-                .search-box button {
-                    font-size: 12px;
-                    padding: 4px 8px;
-                }
-
-                .toppage-header-nav {
-                    display: flex;
-                    flex-direction: row;
-                    flex-shrink: 0;
-                    gap: 6px;
-                    max-width: 300px;
-                    overflow: hidden;                        white-space: nowrap;
-                    justify-content: flex-start !important;
-                    margin-left: 0 !important;
-                }
-                .toppage-nav-link,
-                .toppage-nav-button {
-                    font-size: 12px;
-                    padding: 4px 6px;
-                }
-
-                .toppage-nav-form {
-                    margin: 0;
-                }
-
+        .auth-header .toppage-header-icon img {
+            width: 100px;
+        }
         .auth-content {
+            width: 100%;
+            padding: 0 100px;
             box-sizing: border-box;
         }
 
         .auth-content h1 {
-            font-size: 20px;
+            font-size: 24px;
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-content label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            text-align: center;
+        }
+        .auth-content input[type="text"],
+        .auth-content input[type="email"],
+        .auth-content input[type="password"] {
+            width: 100%;
+            padding: 4px 10px;
+            font-size: 16px;
             margin-bottom: 20px;
         }
 
-        .auth-content form {
+        .auth-content button.register-btn {
+            width: 100%;
+            font-size: 18px;
+            padding: 12px 0;
+        }
+
+        .auth-content .login-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .product-detail {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            padding: 0 15px;
+            box-sizing: border-box;
+            width: 100%;
         }
 
-                .auth-content input,
-                .auth-content button {
-                    width: 100%;
-                    max-width: 100%;
-                    box-sizing: border-box;
-                    /
-                }
+        .product-image-area,
+        .product-detail-image,
+        .product-detail-image img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            box-sizing: border-box;
+        }
 
-        .login-link {
-            font-size: 13px;
+        .product-description-area {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .product-title h1 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 20px;
+        }
+
+        .purchase-button {
+            width: 100%;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        .product-info,
+        .product-description,
+        .product-comments {
+            padding: 0;
+        }
+
+        .product-comments textarea {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .comment-button-text {
+            font-size: 14px;
+        }
+
+        .purchase-wrapper {
+            display: block !important;
+            padding: 0 10px;
+        }
+
+        .purchase-left,
+        .purchase-right {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .order-summary {
+            width: 100%;
+            border: 2px solid #000;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .purchase-btn {
+            position: static !important;
+            width: 100%;
+            margin-top: 20px;
             display: block;
-            text-align: center;
-            margin-top: 15px;
+            margin-bottom: 30px;
+            left: auto;
+            top: auto;
         }
 
-        .error-message {
-            font-size: 12px;
-            color: red;
+        form[action*="checkout"] {
+            width: 100%;
+            display: block;
         }
-}
+
+        .product-summary {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-summary img.product-image {
+            width: 170px;
+            height: auto;
+        }
+
+        .product-info h2 {
+            font-size: 18px;
+        }
+
+        .purchase-divider {
+            margin: 20px 0;
+        }
+
+        .profile-user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-button-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .profile-user-info .user-image,
+        .profile-user-info .profile-image-button {
+            position: static;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .user-image img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 100px;
+        }
+
+        .user-name h2 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+
+        .edit-profile-button {
+            font-size: 13px;
+            padding: 6px 12px;
+            white-space: nowrap;
+            max-width: 120px;
+        }
+
+        .success-message p {
+            font-size: 24px;
+            margin: 0;
+            line-height: 1.5;
+            white-space: nowrap;
+            margin-bottom: 20px;
+        }
+    }
+

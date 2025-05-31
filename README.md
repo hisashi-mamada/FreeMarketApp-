@@ -4,8 +4,8 @@
 
 ### Docker ビルド
 
-1. git clone <https://github.com/yourname/freemarket-app.git>
-2. cd freemarket-app
+1. git clone https://github.com/hisashi-mamada/FreeMarketApp-
+2. cd FreeMarketApp-
 3. docker-compose up -d --build
 
 ### Laravel 環境構築
@@ -41,7 +41,7 @@
 
 ## ER 図
 
-![ER図](er-diagram.png)
+![ER図](./er-diagram.png)
 
 
 ## URL

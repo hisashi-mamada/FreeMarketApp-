@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://github.com/stripe/stripe-cli/releases/tag/v1.27.0
+HostUrl=https://objects.githubusercontent.com/github-production-release-asset-2e65be/191848501/e8101ac6-72e0-42ad-a5b9-a8af7e8b0aca?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250518%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250518T152852Z&X-Amz-Expires=300&X-Amz-Signature=165bd63aec880702f6d70fc019fa2148f317eac9071992429b8fffc01b60182d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dstripe_1.27.0_linux_x86_64.tar.gz&response-content-type=application%2Foctet-stream

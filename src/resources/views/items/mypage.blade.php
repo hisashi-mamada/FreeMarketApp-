@@ -13,7 +13,8 @@
             : asset('images/default_user.png');
             @endphp
 
-            <img src="{{ asset('storage/' . $profile->image_path) }}" alt="ユーザー画像">
+            <img src="{{ asset('storage/' . optional($profile)->image_path ?? 'images/default_user.png') }}" alt="ユーザー画像">
+
 
         </div>
 
@@ -38,7 +39,8 @@
         @foreach($purchases as $purchase)
         @foreach($purchase->purchaseDetails as $detail)
         <div class="product-card">
-            <img src="{{ asset($detail->product->image_url) }}" alt="商品画像">
+            <img src="{{ asset(optional($detail->product)->image_url ?? 'images/default.png') }}" alt="商品画像">
+
             <p class="product-name">{{ $detail->product->name }}</p>
         </div>
         @endforeach
@@ -48,7 +50,6 @@
         <div class="product-card">
             <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像">
             <p class="product-name">{{ $product->name }}</p>
-
             @php
             $categoryIds = explode(',', $product->category_id);
             @endphp

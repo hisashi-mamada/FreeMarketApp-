@@ -9,11 +9,10 @@
         </div>
     </div>
 
-
     <div class="product-description-area">
         <div class="product-title">
             <h1>{{ $product->name }}</h1>
-            <p class="brand-name">{{ $product->brand_name ?? 'ブランド不明' }}</p>
+            <p class="brand-name">{{ $product->brand ?? 'ブランド不明' }}</p>
 
             <p class="price">¥{{ number_format($product->price) }}（税込）</p>
 
@@ -35,15 +34,9 @@
 
                 <span>{{ $product->favorited_users_count ?? 0 }}</span>
 
-
-
-
-
-                {{-- コメントアイコン --}}
                 <img src="{{ asset('images/icon-commet.svg') }}" alt="コメント">
                 <span>{{ $product->comments->count() }}</span>
             </div>
-
         </div>
 
         <div class="purchase-area">

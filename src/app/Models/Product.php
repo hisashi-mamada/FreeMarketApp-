@@ -17,6 +17,11 @@ class Product extends Model
         'price',
         'image_url',
         'condition',
+        'brand',
+    ];
+
+    protected $casts = [
+        'is_sold' => 'boolean',
     ];
 
     public function user()

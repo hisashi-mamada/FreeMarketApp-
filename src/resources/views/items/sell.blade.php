@@ -12,7 +12,7 @@
         <div class="exhibited-products-image">
             <label class="form-label-image">商品画像</label>
             <label for="image-upload" class="custom-file-label">画像を選択する</label>
-            <input type="file" id="image-upload" name="image" class="form-image-input">
+            <input type="file" id="image-upload" name="image" class="form-image-input" style="display: none;">
         </div>
 
         <div class="exhibited-product-detail-area">

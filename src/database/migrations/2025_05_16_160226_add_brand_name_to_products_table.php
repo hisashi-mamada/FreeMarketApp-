@@ -14,7 +14,7 @@ class AddBrandNameToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('brand_name')->nullable();
+            $table->string('brand')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddBrandNameToProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('brand_name');
+            $table->dropColumn('brand');
         });
     }
 }

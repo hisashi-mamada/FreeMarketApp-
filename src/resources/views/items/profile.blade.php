@@ -18,19 +18,21 @@
     @endif
 
     <div class="profile-user-info">
-        <div class="user-image">
-            @php
-            $userImage = isset($profile) && $profile->image_path
-            ? asset('storage/' . $profile->image_path)
-            : asset('images/default_user.png');
-            @endphp
+        <div class="image-button-wrapper">
+            <div class="user-image">
+                @php
+                $userImage = isset($profile) && $profile->image_path
+                ? asset('storage/' . $profile->image_path)
+                : asset('images/default_user.png');
+                @endphp
 
-            <img src="{{ asset('storage/' . $profile->image_path) }}" alt="ユーザー画像">
+                <img src="{{ asset('storage/' . $profile->image_path) }}" alt="ユーザー画像">
 
-        </div>
+            </div>
 
-        <div class="profile-image-button" onclick="document.getElementById('image-upload').click();">
-            画像を選択する
+            <div class="profile-image-button" onclick="document.getElementById('image-upload').click();">
+                画像を選択する
+            </div>
         </div>
 
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">

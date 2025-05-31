@@ -84,6 +84,8 @@ class ItemController extends Controller
             'image_url'   => $imagePath,
             'is_sold'     => false,
             'category_id' => $validated['category_id'],
+            'brand' => $validated['brand'] ?? null,
+
         ]);
 
 
@@ -128,6 +130,6 @@ class ItemController extends Controller
             'body' => $request->input('comment'),
         ]);
 
-        return back()->with('message', 'コメントを投稿しました');
+        return redirect()->route('items.show', ['item_id' => $product_id]);
     }
 }

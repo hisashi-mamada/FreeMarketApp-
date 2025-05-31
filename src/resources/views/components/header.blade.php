@@ -1,7 +1,10 @@
 <header class="toppage-header">
     <div class="toppage-header-icon">
-        <img src="{{ asset('images/logo.svg') }}" alt="COACHTECHロゴ">
+        <a href="{{ route('items.index') }}">
+            <img src="{{ asset('images/logo.svg') }}" alt="COACHTECHロゴ">
+        </a>
     </div>
+
 
     <div class="toppage-header-search">
         <form method="GET" action="{{ route('items.index') }}" class="search-box">
