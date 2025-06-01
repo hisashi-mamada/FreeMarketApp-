@@ -5,18 +5,6 @@
 @section('content')
 <div class="auth-content">
     <h1>プロフィール設定</h1>
-
-    {{-- ✅ バリデーションエラーメッセージ --}}
-    @if ($errors->any())
-    <div class="error-message">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li style="color: red;">{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
     <div class="profile-user-info">
         <div class="image-button-wrapper">
             <div class="user-image">
@@ -27,7 +15,6 @@
                 @endphp
 
                 <img src="{{ asset('storage/' . $profile->image_path) }}" alt="ユーザー画像">
-
             </div>
 
             <div class="profile-image-button" onclick="document.getElementById('image-upload').click();">
@@ -52,11 +39,17 @@
             <input type="text" id="postal_code" name="postal_code"
                 placeholder="例: 123-4567"
                 value="{{ old('postal_code', $profile->postal_code ?? '') }}">
+            @error('postal_code')
+            <div class="error-message">{{ $message }}</div>
+            @enderror
 
             <label for="address">住所</label>
             <input type="text" id="address" name="address"
                 placeholder="例: 東京都港区1-1-1"
                 value="{{ old('address', $profile->address ?? '') }}">
+            @error('address')
+            <div class="error-message">{{ $message }}</div>
+            @enderror
 
             <label for="building">建物名</label>
             <input type="text" id="building" name="building"

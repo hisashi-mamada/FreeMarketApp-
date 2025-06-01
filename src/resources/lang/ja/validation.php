@@ -181,7 +181,13 @@ return [
             'required' => 'コメントを入力してください。',
             'max' => 'コメントは255文字以内で入力してください。',
         ],
-
+        'postal_code' => [
+            'required' => '郵便番号を入力してください',
+            'regex' => '郵便番号の形式が正しくありません',
+        ],
+        'address' => [
+            'required' => '住所を入力してください',
+        ],
     ],
 
     'attributes' => [
@@ -189,6 +195,9 @@ return [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'password_confirmation' => '確認用パスワード',
+        'postal_code' => '郵便番号',
+        'address' => '住所',
+        'building' => '建物名',
     ],
 
 

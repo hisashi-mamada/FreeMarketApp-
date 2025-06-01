@@ -14,8 +14,6 @@
             @endphp
 
             <img src="{{ asset('storage/' . optional($profile)->image_path ?? 'images/default_user.png') }}" alt="ユーザー画像">
-
-
         </div>
 
         <div class="user-name">

@@ -104,13 +104,6 @@ Route::get('/email/verify', function () {
     return view('auth.verify');
 })->middleware(['auth'])->name('verification.notice');
 
-Route::post('/register', function (Request $request) {
-    $creator = app(CreateNewUser::class);
-    $user = $creator->create($request->all());
-
-    Auth::login($user);
-    return redirect('/email/verify');
-})->name('register.post');
 
 Route::post('/purchase/checkout/{item_id}', [\App\Http\Controllers\PurchaseController::class, 'checkout'])->name('purchase.checkout');
 

@@ -75,8 +75,13 @@
             @foreach ($product->comments as $comment)
             <div class="comments-list">
                 <div class="comment-user-info">
-                    <div class="comment-avatar"></div>
-                    {{-- <img src="..." alt="ユーザー画像"> ←画像使用時はこちら --}}
+                    @php
+                    $userImage = isset($comment->user->profile) && $comment->user->profile->image_path
+                    ? asset('storage/' . $comment->user->profile->image_path)
+                    : asset('images/default_user.png');
+                    @endphp
+
+                    <img src="{{ $userImage }}" alt="ユーザー画像" class="comment-avatar">
                     <span class="user-name">{{ $comment->user->name }}</span>
                 </div>
                 <div class="comment-text">{{ $comment->body }}</div>
@@ -98,7 +103,7 @@
                     </button>
                     @else
                     <a href="{{ route('login') }}" class="purchase-button" style="display: inline-block; text-align: center;">
-                        <span class="comment-button-text">ログインしてコメントする</span>
+                        <span class="comment-button-text">コメントを送信する</span>
                     </a>
                     @endauth
                 </form>

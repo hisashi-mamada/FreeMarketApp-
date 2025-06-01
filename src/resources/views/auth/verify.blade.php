@@ -9,7 +9,6 @@
         メール認証を完了してください。
     </h1>
 
-    {{-- グレーの大きいボタン --}}
     <a href="#" class="verify-button" style="
         display: inline-block;
         background-color: #f3f3f3;
@@ -24,7 +23,6 @@
         認証はこちらから
     </a>
 
-    {{-- 再送リンク --}}
     <form method="POST" action="{{ route('verification.send') }}">
         @csrf
         <button type="submit" style="

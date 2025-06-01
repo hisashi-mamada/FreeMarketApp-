@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class FavoriteTest extends TestCase
@@ -39,7 +40,7 @@ class FavoriteTest extends TestCase
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
-        \DB::table('favorites')->insert([
+        DB::table('favorites')->insert([
             'user_id' => $user->id,
             'product_id' => $product->id,
             'created_at' => now(),
@@ -57,7 +58,7 @@ class FavoriteTest extends TestCase
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
-        \DB::table('favorites')->insert([
+        DB::table('favorites')->insert([
             'user_id' => $user->id,
             'product_id' => $product->id,
             'created_at' => now(),

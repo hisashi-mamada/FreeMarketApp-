@@ -16,7 +16,7 @@
 4. `php artisan key:generate` でアプリケーションキーを作成
 5. `php artisan migrate` で本番用DBにマイグレーション
 6. `php artisan db:seed` で本番用DBにデータ投入
-7. `php artisan storage link`
+7. `php artisan storage link` で画像データ挿入
 
 ### テスト環境構築
 
@@ -43,7 +43,6 @@
 ## ER 図
 
 ![ER図](./er-diagram.png)
-
 
 ## URL
 

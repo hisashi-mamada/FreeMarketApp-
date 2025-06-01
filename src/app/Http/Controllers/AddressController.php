@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Address;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddressRequest;
 
@@ -11,6 +9,7 @@ class AddressController extends Controller
 {
     public function edit($item_id)
     {
+
         $user = Auth::user();
         $address = $user->addresses()->latest()->first();
         return view('items.address', compact('address', 'item_id'));
