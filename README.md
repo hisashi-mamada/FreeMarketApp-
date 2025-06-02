@@ -12,7 +12,7 @@
 
 1. `docker-compose exec php bash` でコンテナの PHP に入る
 2. `composer install` で必要なパッケージをインストール
-3. `.env.example` を `.env` にコピーし、環境変数を設定
+3. `.env.example`  を  `.env`  にコピーし、環境変数を設定
 4. `php artisan key:generate` でアプリケーションキーを作成
 5. `php artisan migrate` で本番用DBにマイグレーション
 6. `php artisan db:seed` で本番用DBにデータ投入
@@ -20,7 +20,7 @@
 
 ### テスト環境構築
 
-1. `.env` をコピーして `.env.testing` を作成（phpunit 用テスト環境の設定）
+1. `.env`  をコピーして  `.env.testing`  を作成（phpunit 用テスト環境の設定）
 2. `php artisan migrate --env=testing` でテスト用DBにマイグレーション
 3. `php artisan db:seed --env=testing` でテスト用DBにデータ投入
 
