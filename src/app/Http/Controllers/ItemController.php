@@ -16,6 +16,7 @@ class ItemController extends Controller
     {
         $tab = $request->query('tab');
         $keyword = $request->query('keyword');
+        $query = null; // ← 先に宣言しておくことで安全
 
         if ($tab === 'mylist') {
             $user = Auth::user();
@@ -25,22 +26,31 @@ class ItemController extends Controller
 
             $query = $user->favorites()->with('category', 'user');
         } else {
-            $query = Product::with('category', 'user')
-                ->whereNull('user_id');
+            $query = Product::with('category', 'user');
+
+            // 🔧 user_id = null or user_id != 自分 → 表示対象とする
+            if (Auth::check()) {
+                $query->where(function ($q) {
+                    $q->whereNull('user_id')
+                        ->orWhere('user_id', '!=', Auth::id());
+                });
+            }
+
+            if (!empty($keyword)) {
+                $query->where('name', 'like', '%' . $keyword . '%');
+            }
         }
 
-        if (!empty($keyword)) {
-            $query->where('name', 'like', '%' . $keyword . '%');
+        // 念のため null チェック
+        if (!$query) {
+            $query = Product::with('category', 'user');
         }
 
         $items = $query->orderBy('id')->get();
 
-        if ($tab === 'mylist') {
-            return view('items.index', compact('items', 'tab'));
-        }
-
         return view('items.index', compact('items', 'tab'));
     }
+
 
 
     public function show($item_id)
@@ -61,6 +71,8 @@ class ItemController extends Controller
 
     public function store(ExhibitionRequest $request)
     {
+        dd(Auth::id());
+
         $validated = $request->validated();
 
         $imagePath = null;
