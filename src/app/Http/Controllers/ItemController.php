@@ -25,8 +25,7 @@ class ItemController extends Controller
 
             $query = $user->favorites()->with('category', 'user');
         } else {
-            $query = Product::with('category', 'user')
-                ->whereNull('user_id');
+            $query = Product::with('category', 'user');
         }
 
         if (!empty($keyword)) {
@@ -61,11 +60,18 @@ class ItemController extends Controller
 
     public function store(ExhibitionRequest $request)
     {
+        \Log::debug('出品処理: Auth::id()', ['user_id' => Auth::id()]);
+
+        logger('store: 開始');
+
         $validated = $request->validated();
+
+        logger('store: バリデーションOK', $validated);
 
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('product_images', 'public');
+            logger('store: 画像保存完了', ['path' => $imagePath]);
         }
 
         $validated['category_id'] = isset($validated['category_ids'])
@@ -87,6 +93,7 @@ class ItemController extends Controller
 
         ]);
 
+        logger('store: 商品作成完了');
 
         return redirect('/mypage?tab=sell')->with('message', '商品を出品しました！');
     }

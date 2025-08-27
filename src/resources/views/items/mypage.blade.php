@@ -5,6 +5,7 @@
 @section('content')
 <div class="mypage-container">
 
+
     <div class="user-info">
         <div class="user-image">
             @php
@@ -28,6 +29,8 @@
     <div class="toppage-list">
         <a href="{{ url('/mypage?tab=sell') }}" class="{{ request('tab') !== 'buy' ? 'active' : '' }}">出品した商品</a>
         <a href="{{ url('/mypage?tab=buy') }}" class="{{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
+        <a href="{{ url('/mypage?tab=chat') }}" class="{{ request('tab') === 'chat' ? 'active' : '' }}">取引中の商品</a>
+
     </div>
 
     <div class="toppage-list-border"></div>
@@ -43,7 +46,8 @@
         </div>
         @endforeach
         @endforeach
-        @else
+
+        @elseif($tab === 'sell')
         @foreach($products as $product)
         <div class="product-card">
             <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像">
@@ -58,7 +62,18 @@
             </p>
         </div>
         @endforeach
+
+        @elseif($tab === 'chat')
+        @foreach($chatItems as $item)
+        <a href="{{ route('chat.show', ['product_id' => $item->id]) }}">
+            <div class="product-card">
+                <img src="{{ asset('storage/' . $item->image_url) }}" alt="商品画像">
+                <p class="product-name">{{ $item->name }}</p>
+            </div>
+        </a>
+        @endforeach
         @endif
+
 
     </div>
 

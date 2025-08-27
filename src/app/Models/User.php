@@ -72,4 +72,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function tradingProducts()
+    {
+        return Product::whereHas('comments', function ($query) {
+            $query->where('user_id', $this->id);
+        })
+            ->orWhereHas('purchaseDetail.purchase', function ($query) {
+                $query->where('user_id', $this->id);
+            })
+            ->with('comments')
+            ->get();
+    }
 }
