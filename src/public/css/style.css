@@ -1906,6 +1906,12 @@ main .auth-content .profile-user-info {
     display: block;
 }
 
+.formerror {
+    color: red;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
 /*------------------タブレット（768px〜850px）対応------------------------- */
 
 @media screen and (max-width: 850px) and (min-width: 768px)

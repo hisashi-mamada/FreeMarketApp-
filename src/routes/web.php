@@ -145,3 +145,7 @@ Route::get('/products/{product}/chat-test', function (\App\Models\Product $produ
 Route::middleware(['auth'])->group(function () {
     Route::post('/items/{product}/chat', [ChatController::class, 'store'])->name('chat.message.store');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/items/{product}/chat/message', [ChatController::class, 'storeMessage'])->name('chat.message.store');
+});

@@ -7,6 +7,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ChatMessageRequest;
+
 
 
 class ChatController extends Controller
@@ -67,5 +69,29 @@ class ChatController extends Controller
 
         return redirect()->route('items.chat.show', ['product' => $product->id]);
 
+    }
+
+    public function storeMessage(ChatMessageRequest $request, Product $product)
+    {
+        $validated = $request->validated();
+
+        // 本文取得
+        $body = $validated['message'];
+
+        // 画像があれば保存
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('product_images', 'public');
+        }
+
+        // コメント保存
+        Comment::create([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'body' => $body,
+            'image_path' => $imagePath,
+        ]);
+
+        return redirect()->back()->withInput(); // 入力保持のため
     }
 }

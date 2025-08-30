@@ -109,10 +109,17 @@
         {{-- 入力フォーム（後でPOST先を実ルートに差し替え） --}}
         @if(!$isTradeComplete)
         <section class="composer">
-            <form class="composer__form" method="POST" action="{{ route('chat.message.store', ['product' => $product->id]) }}" enctype="multipart/form-data">
+            {{-- バリデーション表示（後で有効化） --}}
+            @error('message')
+            <div class="formerror">{{ $message }}</div>
+            @enderror
+            @error('image')
+            <div class="formerror">{{ $message }}</div>
+            @enderror
 
+            <form class="composer__form" method="POST" action="{{ route('chat.message.store', ['product' => $product->id]) }}" enctype="multipart/form-data">
                 @csrf
-                <textarea name="message" class="composer__input" rows="2" placeholder="取引メッセージを記入してください"></textarea>
+                <textarea name="message" class="composer__input" rows="2" placeholder="取引メッセージを記入してください">{{ old('message') }}</textarea>
                 <label class="composer__file">
                     画像を追加
                     <input type="file" name="image" accept="image/*" hidden>
@@ -121,14 +128,6 @@
                     <img src="{{ asset('images/inputbuttun 1.png') }}" alt="送信" class="composer__sendicon">
                 </button>
             </form>
-
-            {{-- バリデーション表示（後で有効化） --}}
-            @error('message')
-            <div class="formerror">{{ $message }}</div>
-            @enderror
-            @error('image')
-            <div class="formerror">{{ $message }}</div>
-            @enderror
         </section>
         @endif
     </main>
