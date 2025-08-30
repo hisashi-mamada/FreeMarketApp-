@@ -3,30 +3,39 @@
 @section('title', 'チャット画面')
 
 @section('content')
-@section('content')
 <div class="chatpage">
 
     {{-- 左：その他の取引（任意・後で動的に差し替え） --}}
     <aside class="chatpage__sidebar">
         <div class="side__title">その他の取引</div>
         <ul class="side__list">
-            <li><a href="#" class="side__item">商品名</a></li>
-            <li><a href="#" class="side__item">商品名</a></li>
-            <li><a href="#" class="side__item">商品名</a></li>
+            @foreach($otherChatItems as $item)
+            <li>
+                <a href="{{ route('items.chat.show', ['product' => $item->id]) }}" class="side__item">
+                    {{ $item->name }}
+                </a>
+            </li>
+            @endforeach
         </ul>
     </aside>
+
 
     {{-- 右：チャット本体 --}}
     <main class="chatpage__main">
 
-        {{-- ヘッダー：タイトル＋完了ボタン --}}
+        {{-- ヘッダー --}}
         <header class="chat__header">
             <div class="chat__avatar"></div>
-            <h1 class="chat__title">「山田太郎」さんとの取引画面</h1>
-            <form method="POST" action="#" class="chat__endform">
+
+            <h1 class="chat__title">「{{ $partner->name ?? '不明なユーザー' }}」さんとの取引画面</h1>
+
+            {{-- 出品者のみ「取引完了」ボタン表示 --}}
+            @if($isSeller && !$isTradeComplete)
+            <form method="POST" action="{{ route('chat.complete', ['product' => $product->id]) }}" class="chat__endform">
                 @csrf
                 <button type="submit" class="btn btn--danger">取引を完了する</button>
             </form>
+            @endif
         </header>
 
         <hr class="chat__divider">
@@ -35,49 +44,73 @@
         {{-- 商品サマリー --}}
         <section class="summary">
             <div class="summary__thumb">
-                {{-- 後で storage の画像に差し替え --}}
-                <div class="summary__ph">商品画像</div>
+                <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像" class="summary__ph">
             </div>
             <div class="summary__meta">
-                <div class="summary__name">商品名</div>
-                <div class="summary__price">商品価格</div>
+                <div class="summary__name">{{ $product->name }}</div>
+                <div class="summary__price">¥{{ number_format($product->price) }}</div>
             </div>
         </section>
+
+        {{-- 取引完了メッセージ表示（出品者・購入者両方に） --}}
+        @if($isTradeComplete)
+        <hr class="chat__divider">
+        <div class="trade-complete-msg">
+            <p>この取引は完了しています。</p>
+            {{-- 購入者のみ評価表示（仮） --}}
+            @if($isBuyer)
+            <p>今回の取引に対する評価：</p>
+            <div class="stars">⭐️⭐️⭐️⭐️⭐️</div>
+            @endif
+        </div>
+        @endif
+
 
         <hr class="chat__divider">
 
+
         {{-- メッセージリスト（ダミー） --}}
         <section class="thread" aria-live="polite">
-            {{-- 相手 --}}
-            <div class="msg__head">
-                <div class="msg__avatar"></div>
-                <div class="msg__name">ユーザー名</div>
-            </div>
-            <article class="msg msg--other">
-                <div class="msg__bubble">
-                    <p class="msg__text">こんにちは！商品の状態はどんな感じですか？</p>
-                </div>
-            </article>
+            @foreach($messages as $message)
+            @php
+            $isMe = $message->user_id === Auth::id();
+            @endphp
 
-            {{-- 自分 --}}
-            <article class="msg msg--me">
+            <article class="msg {{ $isMe ? 'msg--me' : 'msg--other' }}">
                 <div class="msg__head">
-                    <div class="msg__avatar"></div>
-                    <div class="msg__name">ユーザー名</div>
+                    <div class="msg__avatar">
+                        <img src="{{ asset('storage/' . ($message->user->profile->image_path ?? 'images/default_user.png')) }}"
+                            alt="ユーザー画像"
+                            class="chat__avatar__img">
+                    </div>
+
+                    <div class="msg__name">{{ $message->user->name }}</div>
                 </div>
+
                 <div class="msg__bubble">
-                    <p class="msg__text">ほぼ未使用で目立つ傷はありません！</p>
+                    @if ($message->body)
+                    <p class="msg__text">{{ $message->body }}</p>
+                    @endif
+                    @if ($message->image_path)
+                    <img src="{{ asset('storage/' . $message->image_path) }}" alt="添付画像" class="chat-image">
+                    @endif
                 </div>
+
+                @if($isMe)
                 <div class="msg__meta">
                     <span>編集</span><span>削除</span>
                 </div>
+                @endif
             </article>
-
+            @endforeach
         </section>
 
+
         {{-- 入力フォーム（後でPOST先を実ルートに差し替え） --}}
+        @if(!$isTradeComplete)
         <section class="composer">
-            <form class="composer__form" method="POST" action="#" enctype="multipart/form-data">
+            <form class="composer__form" method="POST" action="{{ route('chat.message.store', ['product' => $product->id]) }}" enctype="multipart/form-data">
+
                 @csrf
                 <textarea name="message" class="composer__input" rows="2" placeholder="取引メッセージを記入してください"></textarea>
                 <label class="composer__file">
@@ -97,7 +130,7 @@
             <div class="formerror">{{ $message }}</div>
             @enderror
         </section>
-
+        @endif
     </main>
 </div>
 @endsection

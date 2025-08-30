@@ -138,4 +138,9 @@ class ItemController extends Controller
 
         return redirect()->route('items.show', ['item_id' => $product_id]);
     }
+
+    public function chat($id)
+    {
+        return view('items.chat', compact('product'));
+    }
 }

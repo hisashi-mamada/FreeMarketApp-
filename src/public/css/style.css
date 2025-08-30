@@ -1156,12 +1156,44 @@ select {
     width: 290px;
     text-align: center;
     font-size: 14px;
+    position: relative;
 }
 
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .product-card img {
     width: 100%;
     height: auto;
     object-fit: cover;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    z-index: 10;
 }
 
 
@@ -1314,6 +1346,14 @@ main .auth-content .profile-user-info {
     background: #d9d9d9;
 }
 
+.chat__avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
 /* タイトル */
 .chat__title {
     font-size: 36px;
@@ -1367,6 +1407,13 @@ main .auth-content .profile-user-info {
     font-size: 30px;
     color: #333;
     box-sizing: border-box;
+}
+
+.summary__ph{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .summary__meta {
@@ -1459,6 +1506,14 @@ main .auth-content .profile-user-info {
     height: 32px;
     border-radius: 50%;
     background: #d9d9d9;
+}
+
+.chat__avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
 }
 
 .msg__name {

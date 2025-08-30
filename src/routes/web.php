@@ -14,7 +14,8 @@ use App\Http\Controllers\ProfileController;
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ChatController;
-
+use App\Models\Product;
+use App\Models\User;
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
@@ -100,10 +101,47 @@ Route::post('/purchase/checkout/{item_id}', [\App\Http\Controllers\PurchaseContr
 
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('stripe.webhook');
 
+
+// 認証ユーザー用チャット表示
+Route::middleware(['auth'])->group(function () {
+    Route::get('/items/{product}/chat', [ChatController::class, 'show'])->name('items.chat.show');
+});
+
+// 開発・動作テスト用
 Route::get('/test-chat', function () {
     return view('items.chat', ['itemId' => 999]);
 });
 
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/items/{item}/chat', [ChatController::class, 'show'])->name('items.chat.show');
+    Route::get('/chat/{id}', [ItemController::class, 'chat'])->name('chat');
+    Route::post('/chat/{id}', [ItemController::class, 'chatComplete'])->name('chat.complete');
+});
+
+
+// プレビューや管理者など別用途があれば分けて記述
+Route::get('/items/{id}/chat-preview', [ItemController::class, 'chat'])->name('items.chat.preview');
+
+
+Route::get('/test-chat', function () {
+    $product = Product::find(1);
+    $user = User::find(2); // 適当なユーザー
+    return view('items.chat', [
+        'product' => $product,
+        'partner' => $user,
+        'messages' => [],
+        'isSeller' => true,
+        'isBuyer' => false,
+        'isTradeComplete' => false
+    ]);
+});
+
+Route::post('/chat/complete', [ItemController::class, 'complete'])->name('chat.complete');
+
+Route::get('/products/{product}/chat-test', function (\App\Models\Product $product) {
+    dd('到達OK', $product);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/items/{product}/chat', [ChatController::class, 'store'])->name('chat.message.store');
 });

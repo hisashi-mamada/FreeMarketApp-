@@ -65,12 +65,17 @@
 
         @elseif($tab === 'chat')
         @foreach($chatItems as $item)
-        <a href="{{ route('chat.show', ['product_id' => $item->id]) }}">
+        <a href="{{ route('items.chat.show', ['product' => $item->id]) }}">
             <div class="product-card">
+                {{-- 通知マーク（未読メッセージがある場合のみ表示） --}}
+                @if(!empty($item->unread_count) && $item->unread_count > 0)
+                <div class="notification-badge">{{ $item->unread_count }}</div>
+                @endif
                 <img src="{{ asset('storage/' . $item->image_url) }}" alt="商品画像">
                 <p class="product-name">{{ $item->name }}</p>
             </div>
         </a>
+
         @endforeach
         @endif
 

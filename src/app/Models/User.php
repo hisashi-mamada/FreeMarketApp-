@@ -73,15 +73,34 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
+    public function tradingProductsQuery()
+    {
+        return Product::where(function ($query) {
+            $query->where('user_id', $this->id)
+                ->orWhereHas('purchaseDetail.purchase', function ($q) {
+                    $q->where('user_id', $this->id);
+                });
+        })->where('is_sold', false);
+    }
+
     public function tradingProducts()
     {
         return Product::whereHas('comments', function ($query) {
             $query->where('user_id', $this->id);
+        })->get();
+    }
+
+    // app/Models/User.php
+
+    public function tradingProductsSorted()
+    {
+        return Product::whereHas('comments', function ($query) {
+            $query->where('user_id', $this->id);
         })
-            ->orWhereHas('purchaseDetail.purchase', function ($query) {
-                $query->where('user_id', $this->id);
-            })
-            ->with('comments')
+            ->withCount(['comments as latest_comment_at' => function ($query) {
+                $query->select(\DB::raw('MAX(created_at)'));
+            }])
+            ->orderByDesc('latest_comment_at')
             ->get();
     }
 }
