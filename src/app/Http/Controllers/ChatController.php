@@ -66,5 +66,6 @@ class ChatController extends Controller
         $comment->save();
 
         return redirect()->route('items.chat.show', ['product' => $product->id]);
+
     }
 }
