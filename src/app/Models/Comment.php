@@ -13,6 +13,11 @@ class Comment extends Model
         'user_id',
         'product_id',
         'body',
+        'rating',
+    ];
+
+    protected $casts = [
+        'rating' => 'integer',
     ];
 
     public function user()

@@ -90,7 +90,6 @@ class User extends Authenticatable implements MustVerifyEmail
         })->get();
     }
 
-    // app/Models/User.php
 
     public function tradingProductsSorted()
     {
@@ -102,5 +101,36 @@ class User extends Authenticatable implements MustVerifyEmail
             }])
             ->orderByDesc('latest_comment_at')
             ->get();
+    }
+
+    public function averageRating()
+    {
+        return $this->products()
+            ->whereHas('comments', function ($query) {
+                $query->whereNotNull('rating');
+            })
+            ->with('comments')
+            ->get()
+            ->flatMap(function ($product) {
+                return $product->comments->pluck('rating');
+            })
+            ->avg();
+    }
+
+    public function roundedAverageRating()
+    {
+        $ratings = $this->products()
+            ->with('comments')
+            ->get()
+            ->flatMap(function ($product) {
+                return $product->comments->pluck('rating');
+            })
+            ->filter();
+
+        if ($ratings->isEmpty()) {
+            return null;
+        }
+
+        return round($ratings->average());
     }
 }

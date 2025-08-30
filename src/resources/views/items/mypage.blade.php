@@ -19,10 +19,18 @@
 
         <div class="user-name">
             <h2>{{ $profile && $profile->nickname ? $profile->nickname : $user->name }}</h2>
+
+            @if(isset($averageRating))
+            <div class="average-rating">
+                {{ str_repeat('⭐', $averageRating) }}
+            </div>
+            @endif
+
         </div>
         <div class="edit-profile">
             <a href="{{ route('profile.edit') }}" class="edit-profile-button">プロフィールを編集</a>
         </div>
+
     </div>
 
 

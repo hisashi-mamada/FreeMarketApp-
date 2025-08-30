@@ -47,7 +47,8 @@ class MypageController extends Controller
 
 
         $allCategories = Category::pluck('name', 'id')->toArray();
+        $averageRating = $user->roundedAverageRating();
 
-        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases', 'allCategories', 'chatItems'));
+        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases', 'allCategories', 'chatItems', 'averageRating'));
     }
 }
