@@ -16,7 +16,6 @@ class ItemController extends Controller
     {
         $tab = $request->query('tab');
         $keyword = $request->query('keyword');
-        $query = null; // ← 先に宣言しておくことで安全
 
         if ($tab === 'mylist') {
             $user = Auth::user();
@@ -27,30 +26,20 @@ class ItemController extends Controller
             $query = $user->favorites()->with('category', 'user');
         } else {
             $query = Product::with('category', 'user');
-
-            // 🔧 user_id = null or user_id != 自分 → 表示対象とする
-            if (Auth::check()) {
-                $query->where(function ($q) {
-                    $q->whereNull('user_id')
-                        ->orWhere('user_id', '!=', Auth::id());
-                });
-            }
-
-            if (!empty($keyword)) {
-                $query->where('name', 'like', '%' . $keyword . '%');
-            }
         }
 
-        // 念のため null チェック
-        if (!$query) {
-            $query = Product::with('category', 'user');
+        if (!empty($keyword)) {
+            $query->where('name', 'like', '%' . $keyword . '%');
         }
 
         $items = $query->orderBy('id')->get();
 
+        if ($tab === 'mylist') {
+            return view('items.index', compact('items', 'tab'));
+        }
+
         return view('items.index', compact('items', 'tab'));
     }
-
 
 
     public function show($item_id)
@@ -71,13 +60,18 @@ class ItemController extends Controller
 
     public function store(ExhibitionRequest $request)
     {
-        dd(Auth::id());
+        \Log::debug('出品処理: Auth::id()', ['user_id' => Auth::id()]);
+
+        logger('store: 開始');
 
         $validated = $request->validated();
+
+        logger('store: バリデーションOK', $validated);
 
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('product_images', 'public');
+            logger('store: 画像保存完了', ['path' => $imagePath]);
         }
 
         $validated['category_id'] = isset($validated['category_ids'])
@@ -99,6 +93,7 @@ class ItemController extends Controller
 
         ]);
 
+        logger('store: 商品作成完了');
 
         return redirect('/mypage?tab=sell')->with('message', '商品を出品しました！');
     }
@@ -142,5 +137,10 @@ class ItemController extends Controller
         ]);
 
         return redirect()->route('items.show', ['item_id' => $product_id]);
+    }
+
+    public function chat($id)
+    {
+        return view('items.chat', compact('product'));
     }
 }
