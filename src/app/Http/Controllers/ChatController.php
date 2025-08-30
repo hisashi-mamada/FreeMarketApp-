@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ChatMessageRequest;
-
+use Illuminate\Support\Facades\Gate;
 
 
 class ChatController extends Controller
@@ -68,7 +68,6 @@ class ChatController extends Controller
         $comment->save();
 
         return redirect()->route('items.chat.show', ['product' => $product->id]);
-
     }
 
     public function storeMessage(ChatMessageRequest $request, Product $product)
@@ -93,5 +92,46 @@ class ChatController extends Controller
         ]);
 
         return redirect()->back()->withInput(); // 入力保持のため
+    }
+
+    public function edit(Product $product, Comment $comment)
+    {
+        if (Auth::id() !== $comment->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return redirect()->route('items.chat.show', ['product' => $product->id])
+            ->with('editing_comment_id', $comment->id);
+    }
+
+    public function update(ChatMessageRequest $request, Product $product, Comment $comment)
+    {
+        if (Auth::id() !== $comment->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validated = $request->validated();
+
+        $comment->body = $validated['message'];
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('chat_images', 'public');
+            $comment->image_path = $path;
+        }
+
+        $comment->save();
+
+        return redirect()->route('items.chat.show', ['product' => $product->id]);
+    }
+
+    public function destroy(Product $product, Comment $comment)
+    {
+        if (Auth::id() !== $comment->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $comment->delete();
+
+        return redirect()->route('items.chat.show', ['product' => $product->id]);
     }
 }

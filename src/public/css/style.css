@@ -1912,6 +1912,28 @@ main .auth-content .profile-user-info {
     margin-bottom: 5px;
 }
 
+.editing-hide {
+    display: none !important;
+}
+
+.msg__meta a,
+.msg__meta button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 1;
+    color: #5F5F5F;
+    border: none;
+    margin-left: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.msg__meta form {
+    display: inline;
+}
+
 /*------------------タブレット（768px〜850px）対応------------------------- */
 
 @media screen and (max-width: 850px) and (min-width: 768px)

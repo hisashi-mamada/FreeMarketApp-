@@ -149,3 +149,17 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/items/{product}/chat/message', [ChatController::class, 'storeMessage'])->name('chat.message.store');
 });
+
+Route::middleware(['auth'])->group(function () {
+    // 編集画面（フォーム表示）
+    Route::get('/items/{product}/chat/message/{comment}/edit', [ChatController::class, 'edit'])
+        ->name('chat.message.edit');
+
+    // 更新処理
+    Route::put('/items/{product}/chat/message/{comment}', [ChatController::class, 'update'])
+        ->name('chat.message.update');
+
+    // 削除処理
+    Route::delete('/items/{product}/chat/message/{comment}', [ChatController::class, 'destroy'])
+        ->name('chat.message.destroy');
+});

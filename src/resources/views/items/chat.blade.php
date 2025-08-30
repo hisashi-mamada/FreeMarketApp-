@@ -98,9 +98,31 @@
 
                 @if($isMe)
                 <div class="msg__meta">
-                    <span>編集</span><span>削除</span>
+                    @if(session('editing_comment_id') === $message->id)
+                    {{-- 編集モード中は本文を表示しない --}}
+                    <form action="{{ route('chat.message.update', ['product' => $product->id, 'comment' => $message->id]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" name="message" value="{{ old('message', $message->body) }}">
+                        <input type="file" name="image">
+                        <button type="submit">保存</button>
+                        <a href="{{ route('items.chat.show', ['product' => $product->id]) }}">キャンセル</a>
+                    </form>
+                    @else
+                    {{-- 通常表示 --}}
+                    <a href="{{ route('chat.message.edit', ['product' => $product->id, 'comment' => $message->id]) }}">編集</a>
+                    <form action="{{ route('chat.message.destroy', ['product' => $product->id, 'comment' => $message->id]) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">削除</button>
+                    </form>
+                    @endif
+
                 </div>
                 @endif
+
+
+
             </article>
             @endforeach
         </section>
