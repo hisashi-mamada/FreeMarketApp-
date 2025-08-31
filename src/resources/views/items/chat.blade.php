@@ -33,7 +33,7 @@
             @if($isBuyer && $detail && $detail->buyer_rating === null)
             <form action="{{ route('items.chat.complete', ['product' => $product->id]) }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="trade-complete-btn">取引を完了する</button>
+                <button type="submit" class="btn--danger">取引を完了する</button>
             </form>
             @endif
 

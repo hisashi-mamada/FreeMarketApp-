@@ -6,17 +6,12 @@ use App\Models\Product;
 use App\Models\PurchaseDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RatingController extends Controller
 {
-    /**
-     * 取引評価の保存（購入者→出品者 or 出品者→購入者）
-     * - purchase_details テーブルのカラムを更新
-     * - 送信後は商品一覧へリダイレクト
-     */
     public function store(Request $request, Product $product)
     {
-        // 入力バリデーション
         $data = $request->validate([
             'score'   => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string|max:1000',
@@ -31,6 +26,8 @@ class RatingController extends Controller
         $buyerId  = optional($detail->purchase)->user_id; // 購入者
         $sellerId = $product->user_id;                     // 出品者
         $uid      = Auth::id();
+
+        $wasBuyerRatedBefore = !is_null($detail->buyer_rating);
 
         // ロールに応じて保存先のカラムを分岐＆権限チェック
         if ($uid === $buyerId) {
@@ -55,6 +52,24 @@ class RatingController extends Controller
         }
 
         $detail->save();
+
+        if ($uid === $buyerId) {
+            $seller = $product->user ?? \App\Models\User::find($product->user_id);
+            if ($seller && $seller->email) {
+                $subject = '【取引完了のお知らせ】' . $product->name;
+                $buyer   = Auth::user();
+                $homeUrl = url('/'); // 遷移先はホーム
+
+                Mail::raw(
+                    "出品された商品「{$product->name}」について、購入者 {$buyer->name} さんが取引を完了しました。\n\n"
+                        . "出品者としての評価がまだの場合は、アプリから評価をお願いします。\n\n"
+                        . "ホーム画面へ：{$homeUrl}\n",
+                    function ($message) use ($seller, $subject) {
+                        $message->to($seller->email)->subject($subject);
+                    }
+                );
+            }
+        }
 
         return redirect()->route('items.index')->with('status', '評価を送信しました。');
     }
