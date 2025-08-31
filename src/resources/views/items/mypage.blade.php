@@ -44,18 +44,19 @@
     <div class="toppage-list-border"></div>
 
     <div class="product-grid">
-        @if($tab === 'buy')
+        @php $activeTab = $tab ?? request('tab') ?? 'sell'; @endphp
+        @if($activeTab === 'buy')
         @foreach($purchases as $purchase)
         @foreach($purchase->purchaseDetails as $detail)
         <div class="product-card">
-            <img src="{{ asset(optional($detail->product)->image_url ?? 'images/default.png') }}" alt="商品画像">
+            <img src="{{ asset('storage/' . optional($detail->product)->image_url) }}" alt="商品画像">
 
-            <p class="product-name">{{ $detail->product->name }}</p>
+            <p class="product-name">{{ optional($detail->product)->name }}</p>
         </div>
         @endforeach
         @endforeach
 
-        @elseif($tab === 'sell')
+        @elseif($activeTab === 'sell')
         @foreach($products as $product)
         <div class="product-card">
             <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像">
@@ -71,7 +72,7 @@
         </div>
         @endforeach
 
-        @elseif($tab === 'chat')
+        @elseif($activeTab === 'chat')
         @foreach($chatItems as $item)
         <a href="{{ route('items.chat.show', ['product' => $item->id]) }}">
             <div class="product-card">

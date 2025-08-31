@@ -9,33 +9,58 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Support\Facades\Gate;
-
+use App\Models\PurchaseDetail;
+use App\Models\Purchase;
+use App\Models\User;
 
 class ChatController extends Controller
 {
     public function show(Product $product)
     {
-        //dd($product); //
-        //dd(Auth::id());
-
         $product->load(['user']);
         $user = Auth::user();
+
         $otherChatItems = $user->tradingProducts()->where('id', '!=', $product->id);
 
-        // 仮で seller をログインユーザーに一致させる（確認目的）
-        $product->user_id = $user->id;
-        $product->save();
+        // 出品者
+        $sellerId = $product->user_id;
+        $seller   = $sellerId ? User::find($sellerId) : null;
 
-        $seller = $product->user;
-        $isSeller = $user->id === $seller->id;
-        $isBuyer = false;
-        $partner = $seller;
-        $isTradeComplete = false;
-        $messages = Comment::with('user')
+        // この商品の purchase_details（最新1件想定）
+        $detail = \App\Models\PurchaseDetail::with('purchase')
+            ->where('product_id', $product->id)
+            ->latest('id')
+            ->first();
+
+        // 購入者ID（$detailやpurchaseがnullでも安全）
+        $buyerId = data_get($detail, 'purchase.user_id');
+
+        // 役割判定
+        $isSeller = $user->id === $sellerId;
+        $isBuyer  = $buyerId !== null && $user->id === (int)$buyerId;
+
+        $force = session('force_rating_modal', false);
+
+        // モーダル表示条件（PHP7でもOKな比較に）
+        $showBuyerModal  = $isBuyer
+            && $detail
+            && $detail->buyer_rating === null
+            && $force;
+        $showSellerModal = $isSeller && $detail && $detail->buyer_rating !== null && $detail->seller_rating === null;
+
+        // 取引完了（両者評価済み）
+        $isTradeComplete = (bool) ($detail && $detail->buyer_rating !== null && $detail->seller_rating !== null);
+
+        // 相手ユーザー
+        $partner = $isSeller
+            ? ($buyerId ? \App\Models\User::find($buyerId) : $seller)
+            : $seller;
+
+        // メッセージ
+        $messages = \App\Models\Comment::with('user')
             ->where('product_id', $product->id)
             ->orderBy('created_at', 'asc')
             ->get();
-
 
         return view('items.chat', compact(
             'product',
@@ -44,9 +69,15 @@ class ChatController extends Controller
             'isSeller',
             'isBuyer',
             'isTradeComplete',
-            'otherChatItems'
+            'otherChatItems',
+            'detail',
+            'showBuyerModal',
+            'showSellerModal',
+            'buyerId'
         ));
     }
+
+
 
     public function store(Request $request, Product $product)
     {
@@ -133,5 +164,26 @@ class ChatController extends Controller
         $comment->delete();
 
         return redirect()->route('items.chat.show', ['product' => $product->id]);
+    }
+
+    public function complete(Product $product)
+    {
+        // この商品の取引詳細を取得
+        $detail = PurchaseDetail::with('purchase')
+            ->where('product_id', $product->id)
+            ->latest('id')
+            ->firstOrFail();
+
+        $buyerId = data_get($detail, 'purchase.user_id');
+
+        // 購入者だけが「取引完了」を押せる
+        if (Auth::id() !== (int)$buyerId) {
+            abort(403, '購入者のみが取引完了できます。');
+        }
+
+        // モーダルを出すためのフラグをセッションにセットしてチャットへ戻る
+        return redirect()
+            ->route('items.chat.show', ['product' => $product->id])
+            ->with('force_rating_modal', true);
     }
 }

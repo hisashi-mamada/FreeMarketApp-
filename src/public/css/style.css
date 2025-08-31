@@ -1699,7 +1699,7 @@ main .auth-content .profile-user-info {
     font-size: 36px;
     font-weight: 700;
     color: #111;
-    margin: 0;
+    margin-right: 150px;
 }
 
 /* ボタン（既存の.btn--dangerに合わせて調整） */
@@ -1932,6 +1932,119 @@ main .auth-content .profile-user-info {
 
 .msg__meta form {
     display: inline;
+}
+
+.rating-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.rating-modal {
+    width: 598px;
+    /* サンプル準拠 */
+    max-width: calc(100% - 32px);
+    /* 画面が狭い時のはみ出し防止 */
+    background: #FDFCE6;
+    /* サンプル右欄の色 */
+    border: 1px solid #000;
+    /* 1px 黒枠 */
+    border-radius: 15px;
+    /* 角丸 */
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+.rating-modal__title {
+    margin: 0 0 12px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.rating-modal__divider {
+    border: none;
+    border-top: 1px solid #CCC;
+    margin: 8px 0 14px;
+}
+
+.rating-modal__subtitle {
+    margin: 0 0 10px;
+    color: #666;
+}
+
+/* --- star rating (CSSのみ) --- */
+.rating {
+    /* 視覚的には左→右に★を増やすが、CSS連動の都合で右寄せ配置（float:right）を使う */
+    font-size: 64px;
+    /* サンプルの大きめスター */
+    line-height: 1;
+    display: inline-block;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    /* 視覚上の並びを反転 */
+}
+
+.rating input {
+    position: absolute;
+    left: -9999px;
+    /* ラジオは非表示 */
+}
+
+.rating .star {
+    float: right;
+    /* 右詰めに並べる */
+    color: #D9D9D9;
+    /* 未選択色（薄グレー） */
+    cursor: pointer;
+    padding: 0 6px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+}
+
+/* 選択時：その★自身＋それより低い★を一括で着色 */
+.rating input:checked+.star,
+.rating input:checked+.star~.star {
+    color: #FFD23F;
+    /* 着色（黄色） */
+}
+
+/* ホバー時の見た目（操作感向上） */
+.rating .star:hover,
+.rating .star:hover~.star {
+    color: #FFD23F;
+}
+
+/* --- actions --- */
+.rating-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.rating-modal__submit {
+    background: #FF9DA0;
+    /* サンプルのピンク系に寄せる */
+    color: #fff;
+    border: 1px solid #E88486;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rating-modal__close {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #555;
+    border: 1px solid #DDD;
+    background: #FFF;
 }
 
 /*------------------タブレット（768px〜850px）対応------------------------- */

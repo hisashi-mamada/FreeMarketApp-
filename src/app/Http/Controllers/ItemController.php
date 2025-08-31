@@ -128,16 +128,18 @@ class ItemController extends Controller
         return redirect()->route('items.show', ['item_id' => $product->id]);
     }
 
-    public function addComment(CommentRequest $request, $product_id)
+    public function addComment(\App\Http\Requests\CommentRequest $request, Product $product)
     {
         Comment::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product_id,
-            'body' => $request->input('comment'),
+            'user_id'    => Auth::id(),
+            'product_id' => $product->id,
+            'body'       => $request->input('comment'),
         ]);
 
-        return redirect()->route('items.show', ['item_id' => $product_id]);
+        return redirect()->route('items.show', ['item_id' => $product]);
     }
+
+
 
     public function chat($id)
     {

@@ -30,12 +30,13 @@
             <h1 class="chat__title">「{{ $partner->name ?? '不明なユーザー' }}」さんとの取引画面</h1>
 
             {{-- 出品者のみ「取引完了」ボタン表示 --}}
-            @if($isSeller && !$isTradeComplete)
-            <form method="POST" action="{{ route('chat.complete', ['product' => $product->id]) }}" class="chat__endform">
+            @if($isBuyer && $detail && $detail->buyer_rating === null)
+            <form action="{{ route('items.chat.complete', ['product' => $product->id]) }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="btn btn--danger">取引を完了する</button>
+                <button type="submit" class="trade-complete-btn">取引を完了する</button>
             </form>
             @endif
+
         </header>
 
         <hr class="chat__divider">
@@ -52,16 +53,40 @@
             </div>
         </section>
 
-        {{-- 取引完了メッセージ表示（出品者・購入者両方に） --}}
-        @if($isTradeComplete)
-        <hr class="chat__divider">
-        <div class="trade-complete-msg">
-            <p>この取引は完了しています。</p>
-            {{-- 購入者のみ評価表示（仮） --}}
-            @if($isBuyer)
-            <p>今回の取引に対する評価：</p>
-            <div class="stars">⭐️⭐️⭐️⭐️⭐️</div>
-            @endif
+        @if($showBuyerModal || $showSellerModal)
+        <div class="rating-modal-overlay">
+            <div class="rating-modal">
+                <h3 class="rating-modal__title">取引が完了しました。</h3>
+                <hr class="rating-modal__divider">
+                <p class="rating-modal__subtitle">今回の取引相手はどうでしたか？</p>
+
+                <form action="{{ route('rate.store', ['product' => $product->id]) }}" method="POST" class="rating-form">
+                    @csrf
+
+                    {{-- ★ 5〜1（高→低）の順に並べるとCSSだけで連動塗りができる --}}
+                    <div class="rating">
+                        <input type="radio" id="star5" name="score" value="5" required>
+                        <label class="star" for="star5" title="5">★</label>
+
+                        <input type="radio" id="star4" name="score" value="4">
+                        <label class="star" for="star4" title="4">★</label>
+
+                        <input type="radio" id="star3" name="score" value="3">
+                        <label class="star" for="star3" title="3">★</label>
+
+                        <input type="radio" id="star2" name="score" value="2">
+                        <label class="star" for="star2" title="2">★</label>
+
+                        <input type="radio" id="star1" name="score" value="1">
+                        <label class="star" for="star1" title="1">★</label>
+                    </div>
+
+                    <div class="rating-modal__actions">
+                        <button type="submit" class="rating-modal__submit">送信する</button>
+                        <a class="rating-modal__close" href="{{ route('items.chat.show', ['product' => $product->id]) }}">閉じる</a>
+                    </div>
+                </form>
+            </div>
         </div>
         @endif
 

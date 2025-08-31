@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PurchaseDetail;
+use App\Models\Comment;
 
 class Product extends Model
 {
@@ -37,6 +39,11 @@ class Product extends Model
     public function purchaseDetail()
     {
         return $this->hasOne(\App\Models\PurchaseDetail::class);
+    }
+
+    public function purchaseDetails()
+    {
+        return $this->hasMany(PurchaseDetail::class, 'product_id');
     }
 
     public function isSold()

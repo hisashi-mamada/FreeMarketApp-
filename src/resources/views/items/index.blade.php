@@ -19,7 +19,7 @@
         <div class="product-box">
             <a href="{{ url('/item/' . $item->id) }}">
                 <div class="product-image">
-                    <img src="{{ $item->image_url }}" alt="商品画像">
+                    <img src="{{ asset('storage/' . ltrim($item->image_url, '/')) }}" alt="商品画像">
                     @auth
                     @if ($item->isSold())
                     <span class="sold-label">sold</span>

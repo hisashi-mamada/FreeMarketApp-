@@ -15,7 +15,7 @@ class MypageController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $tab = $request->query('tab');
+        $tab = $request->query('tab', 'sell');
 
         $products = [];
         $purchases = [];

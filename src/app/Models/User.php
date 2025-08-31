@@ -75,13 +75,21 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function tradingProductsQuery()
     {
-        return Product::where(function ($query) {
-            $query->where('user_id', $this->id)
-                ->orWhereHas('purchaseDetail.purchase', function ($q) {
-                    $q->where('user_id', $this->id);
+        return \App\Models\Product::where(function ($q) {
+            // 自分が出品者の取引（購入詳細がある＝取引が始まっている）
+            $q->where('user_id', $this->id)
+                ->whereHas('purchaseDetails');
+        })
+            ->orWhere(function ($q) {
+                // 自分が購入者の取引
+                $q->whereHas('purchaseDetails.purchase', function ($qq) {
+                    $qq->where('user_id', $this->id);
                 });
-        })->where('is_sold', false);
+            })
+            // 取引完了も含めたいならこのまま。未完了だけにしたいなら下の“未完了だけ”を採用
+            ->orderByDesc('id');
     }
+
 
     public function tradingProducts()
     {

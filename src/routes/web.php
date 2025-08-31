@@ -16,6 +16,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ChatController;
 use App\Models\Product;
 use App\Models\User;
+use App\Http\Controllers\RatingController;
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
@@ -27,9 +28,10 @@ Route::get('/register', [RegisterController::class, 'show'])->name('register.sho
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/purchase/success', function () {
-    return view('items.purchase_success');
-})->name('purchase.success');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/purchase/success', [PurchaseController::class, 'success'])
+        ->name('purchase.success');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.show');
@@ -104,7 +106,8 @@ Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])->name
 
 // 認証ユーザー用チャット表示
 Route::middleware(['auth'])->group(function () {
-    Route::get('/items/{product}/chat', [ChatController::class, 'show'])->name('items.chat.show');
+    Route::post('/items/{product}/chat/complete', [ChatController::class, 'complete'])
+        ->name('items.chat.complete');
 });
 
 // 開発・動作テスト用
@@ -162,4 +165,15 @@ Route::middleware(['auth'])->group(function () {
     // 削除処理
     Route::delete('/items/{product}/chat/message/{comment}', [ChatController::class, 'destroy'])
         ->name('chat.message.destroy');
+});
+
+Route::get('/items/{product}/chat', [ChatController::class, 'show'])
+    ->name('items.chat.show');
+
+Route::post('/items/{product}/chat/complete', [ChatController::class, 'complete'])
+    ->name('items.chat.complete');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/items/{product}/rate', [RatingController::class, 'store'])
+        ->name('rate.store');
 });
