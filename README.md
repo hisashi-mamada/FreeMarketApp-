@@ -16,7 +16,7 @@
 4. `php artisan key:generate` でアプリケーションキーを作成
 5. `php artisan migrate` で本番用DBにマイグレーション
 6. `php artisan db:seed` で本番用DBにデータ投入
-7. `php artisan storage link` で画像データ挿入
+7. `php artisan storage:link` で画像データ挿入
 
 ### テスト環境構築
 
@@ -59,3 +59,18 @@
 - お気に入り登録機能
 - マイページ（購入履歴・お気に入り一覧）
 - ユーザー登録 / ログイン / ログアウト（Laravel Fortify）
+
+## PROテストで追加した項目
+
+- チャット画面（chat.blade.php）
+- ユーザーダミーデータ
+|'田中　一郎'（CO01〜05の出品者）| `seller01@example.com` | `password123` |
+|'山田　花子'（CO06〜10の出品者）| `seller02@example.com` | `password456` |
+|'佐藤　次郎'（商品紐づきなし）   | `viewer@example.com`   | `password789` |
+
+### ダミーデータ投入（最小手順）
+
+```bash
+php artisan db:seed --class=UsersTableSeeder
+php artisan db:seed --class=ProductsTableSeeder
+
