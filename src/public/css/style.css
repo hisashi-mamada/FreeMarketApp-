@@ -151,7 +151,7 @@ body {
 }
 
 .toppage-list a:first-child {
-    margin-left: 90px;
+    margin:0 50px;
     color: #FF0000;
 
 }
@@ -1671,7 +1671,8 @@ main .auth-content .profile-user-info {
 
 .chat__header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 16px;
     align-items: center;
     padding: 12px 32px;
     background: #fff;
@@ -1694,12 +1695,24 @@ main .auth-content .profile-user-info {
     background: #d9d9d9;
 }
 
+.chat__avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 画像を中央トリミング */
+    display: block;
+}
 /* タイトル */
 .chat__title {
     font-size: 36px;
     font-weight: 700;
     color: #111;
-    margin-right: 150px;
+    margin:0;
+}
+
+.chat__complete {
+    margin-left: auto;
+    flex: 0 0 auto;
 }
 
 /* ボタン（既存の.btn--dangerに合わせて調整） */
@@ -1947,46 +1960,41 @@ main .auth-content .profile-user-info {
 
 .rating-modal {
     width: 598px;
-    /* サンプル準拠 */
+    height: 367px;
     max-width: calc(100% - 32px);
-    /* 画面が狭い時のはみ出し防止 */
     background: #FDFCE6;
-    /* サンプル右欄の色 */
     border: 1px solid #000;
-    /* 1px 黒枠 */
     border-radius: 15px;
-    /* 角丸 */
     padding: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+    --pad-x: 16px;
+    padding: var(--pad-x);
 }
 
 .rating-modal__title {
-    margin: 0 0 12px;
-    font-size: 22px;
-    font-weight: 700;
+    margin: 0 0 30px;
+    font-size:35px;
+    font-weight: 400;
 }
 
 .rating-modal__divider {
     border: none;
-    border-top: 1px solid #CCC;
-    margin: 8px 0 14px;
+    border-top: 1px solid #000;
+    margin: 8px calc(var(--pad-x) * -1) 14px;
 }
 
 .rating-modal__subtitle {
-    margin: 0 0 10px;
-    color: #666;
+    margin: 0 0 30px;
+    color: #868686;;
 }
 
-/* --- star rating (CSSのみ) --- */
 .rating {
-    /* 視覚的には左→右に★を増やすが、CSS連動の都合で右寄せ配置（float:right）を使う */
-    font-size: 64px;
-    /* サンプルの大きめスター */
+    font-size: 100px;
     line-height: 1;
     display: inline-block;
     unicode-bidi: bidi-override;
     direction: rtl;
-    /* 視覚上の並びを反転 */
+    padding-bottom: 30px;
 }
 
 .rating input {
@@ -1997,19 +2005,15 @@ main .auth-content .profile-user-info {
 
 .rating .star {
     float: right;
-    /* 右詰めに並べる */
     color: #D9D9D9;
-    /* 未選択色（薄グレー） */
     cursor: pointer;
     padding: 0 6px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
-/* 選択時：その★自身＋それより低い★を一括で着色 */
 .rating input:checked+.star,
 .rating input:checked+.star~.star {
     color: #FFD23F;
-    /* 着色（黄色） */
 }
 
 /* ホバー時の見た目（操作感向上） */
@@ -2028,23 +2032,31 @@ main .auth-content .profile-user-info {
 
 .rating-modal__submit {
     background: #FF9DA0;
-    /* サンプルのピンク系に寄せる */
     color: #fff;
     border: 1px solid #E88486;
     border-radius: 6px;
     padding: 8px 16px;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
+    width: 127px;
+    height: 49px;
+    font-size: 20px;
 }
 
 .rating-modal__close {
-    display: inline-block;
-    padding: 8px 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     border-radius: 6px;
     text-decoration: none;
     color: #555;
     border: 1px solid #DDD;
     background: #FFF;
+    width: 127px;
+    height: 49px;
+    font-size: 20px;
+    text-align: center;
 }
 
 /*------------------タブレット（768px〜850px）対応------------------------- */
@@ -2339,5 +2351,239 @@ main .auth-content .profile-user-info {
             white-space: nowrap;
             margin-bottom: 20px;
         }
+
+                .chatpage {
+                    display: grid;
+                    grid-template-columns: 170px 1fr;
+                    column-gap: 16px;
+                }
+
+                /* サイドバー */
+                .chatpage__sidebar {
+                    padding: 12px;
+                    border-right: 1px solid #eee;
+                    width: 200px;
+                }
+
+                .side__title {
+                    font-size: 14px;
+                    margin: 0 0 8px;
+                    line-height: 1.2;
+                }
+
+                .side__list {
+                    max-height: calc(100vh - 220px);
+                    overflow: auto;
+                }
+
+                .side__item {
+                    display: block;
+                    padding: 8px 10px;
+                    font-size: 14px;
+                    line-height: 1.2;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                /* メイン */
+                .chatpage__main {
+                    padding: 12px;
+                    min-width: 0;
+                }
+
+                /* ヘッダー */
+                .chat__header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                }
+
+                .chat__avatar {
+                    width: 40px;
+                    height: 40px;
+                    flex: 0 0 40px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                                }
+
+                .chat__title {
+                    font-size: 24px;
+                    line-height: 1.2;
+                    margin: 0;
+                    word-break: break-word;
+                    flex: 1 1 auto;
+                }
+
+                .trade-complete-btn {
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    line-height: 1;
+                }
+
+                /* 商品サマリー */
+                .summary {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 8px 0;
+                }
+
+                .summary__thumb {
+                    width: 96px;
+                    height: 100px;
+                    flex: 0 0 96px;
+                }
+
+                .summary__ph {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 8px;
+                }
+
+                .summary__name {
+                    font-size: 32px;
+                    margin: 0 0 6px;
+                }
+
+                .summary__price {
+                    font-size: 32px;
+                    margin: 0;
+                }
+
+                /* スレッド（高さ確保 & はみ出し防止） */
+                .thread {
+                    max-height: calc(100vh - 320px);
+                    /* ヘッダー/サマリー/コンポーザー分を差し引き */
+                    overflow: auto;
+                    padding-right: 4px;
+                    /* スクロールバー干渉防止 */
+                }
+
+                .msg__head {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-bottom: 6px;
+                }
+
+                .msg__avatar {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                }
+
+                .chat__avatar__img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+
+                .msg__name {
+                    font-size: 13px;
+                    line-height: 1.2;
+                }
+
+                .msg__bubble {
+                    font-size: 14px;
+                    line-height: 1.5;
+                    padding: 10px 12px;
+                    border-radius: 12px;
+                    max-width: 100%;
+                    word-break: break-word;
+                }
+
+                /* 入力欄（フッター固定風） */
+                .composer {
+                    position: sticky;
+                    bottom: 0;
+                    background: #fff;
+                    padding: 10px 0;
+                    border-top: 1px solid #eee;
+                }
+
+                .composer__form {
+                    display: flex;
+                    align-items: flex-end;
+                    gap: 8px;
+                }
+
+                .composer__input {
+                    flex: 1 1 auto;
+                    min-height: 44px;
+                    font-size: 14px;
+                    padding: 10px 12px;
+                    resize: vertical;
+                    max-height: 160px;
+                }
+
+                .composer__file {
+                    display: inline-block;
+                    padding: 8px 10px;
+                    font-size: 13px;
+                    line-height: 1;
+                    white-space: nowrap;
+                }
+
+                .composer__sendbtn {
+                    width: 44px;
+                    height: 44px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 10px;
+                    padding: 0;
+                }
+
+                .composer__sendicon {
+                    width: 22px;
+                    height: 22px;
+                    display: block;
+                }
+
+                /* 評価モーダル（はみ出し防止） */
+                .rating-modal-overlay {
+                    padding: 16px;
+                    /* 端末横幅が狭いときの余白 */
+                }
+
+                .rating-modal {
+                    width: min(520px, 92vw);
+                    padding: 16px;
+                    border-radius: 12px;
+                }
+
+                .rating-modal__title {
+                    font-size: 16px;
+                    margin: 0 0 6px;
+                }
+
+                .rating-modal__subtitle {
+                    font-size: 14px;
+                    margin: 0 0 12px;
+                }
+
+                .rating-modal__actions {
+                    display: flex;
+                    gap: 8px;
+                    justify-content: flex-end;
+                }
+
+                .rating-modal__submit,
+                .rating-modal__close {
+                    font-size: 14px;
+                    padding: 8px 12px;
+                    line-height: 1;
+                }
+
+
+                .rating .star {
+                    font-size: 22px;
+                    padding: 0 2px;
+                }
     }
 

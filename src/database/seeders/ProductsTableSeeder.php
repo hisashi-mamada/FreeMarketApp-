@@ -16,6 +16,8 @@ class ProductsTableSeeder extends Seeder
     public function run()
     {
         $user = User::where('email', 'test@example.com')->first();
+        $sellerA = User::where('email', 'seller01@example.com')->firstOrFail(); 
+        $sellerB = User::where('email', 'seller02@example.com')->firstOrFail();
 
         $products = [
             [
@@ -120,8 +122,15 @@ class ProductsTableSeeder extends Seeder
             ],
         ];
 
-        foreach ($products as $product) {
-            Product::create($product);
+        foreach ($products as $i => $data) {
+            // 1〜5 → A、6〜10 → B
+            $data['user_id'] = $i < 5 ? $sellerA->id : $sellerB->id;
+
+            // name をキーに upsert（既存があれば更新、なければ作成）
+            Product::updateOrCreate(
+                ['name' => $data['name']], // 一意キー相当
+                $data
+            );
         }
     }
 }

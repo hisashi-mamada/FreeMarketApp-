@@ -5,10 +5,10 @@
 @section('content')
 <div class="chatpage">
 
-    {{-- 左：その他の取引（任意・後で動的に差し替え） --}}
     <aside class="chatpage__sidebar">
         <div class="side__title">その他の取引</div>
         <ul class="side__list">
+            @if(!$isBuyer)
             @foreach($otherChatItems as $item)
             <li>
                 <a href="{{ route('items.chat.show', ['product' => $item->id]) }}" class="side__item">
@@ -16,6 +16,7 @@
                 </a>
             </li>
             @endforeach
+            @endif
         </ul>
     </aside>
 
@@ -25,13 +26,18 @@
 
         {{-- ヘッダー --}}
         <header class="chat__header">
-            <div class="chat__avatar"></div>
+            <div class="chat__avatar">
+                <img
+                    src="{{ asset('storage/' . (optional($partner->profile)->image_path ?? 'images/default_user.png')) }}"
+                    alt="{{ $partner->name ?? 'ユーザー' }}"
+                    class="chat__avatar__img">
+            </div>
 
             <h1 class="chat__title">「{{ $partner->name ?? '不明なユーザー' }}」さんとの取引画面</h1>
 
-            {{-- 出品者のみ「取引完了」ボタン表示 --}}
             @if($isBuyer && $detail && $detail->buyer_rating === null)
-            <form action="{{ route('items.chat.complete', ['product' => $product->id]) }}" method="POST" style="display:inline;">
+            <form action="{{ route('items.chat.complete', ['product' => $product->id]) }}"
+                method="POST" class="chat__complete">
                 @csrf
                 <button type="submit" class="btn--danger">取引を完了する</button>
             </form>
@@ -62,8 +68,6 @@
 
                 <form action="{{ route('rate.store', ['product' => $product->id]) }}" method="POST" class="rating-form">
                     @csrf
-
-                    {{-- ★ 5〜1（高→低）の順に並べるとCSSだけで連動塗りができる --}}
                     <div class="rating">
                         <input type="radio" id="star5" name="score" value="5" required>
                         <label class="star" for="star5" title="5">★</label>
@@ -81,6 +85,8 @@
                         <label class="star" for="star1" title="1">★</label>
                     </div>
 
+                    <hr class="rating-modal__divider">
+                    
                     <div class="rating-modal__actions">
                         <button type="submit" class="rating-modal__submit">送信する</button>
                         <a class="rating-modal__close" href="{{ route('items.chat.show', ['product' => $product->id]) }}">閉じる</a>
@@ -124,7 +130,6 @@
                 @if($isMe)
                 <div class="msg__meta">
                     @if(session('editing_comment_id') === $message->id)
-                    {{-- 編集モード中は本文を表示しない --}}
                     <form action="{{ route('chat.message.update', ['product' => $product->id, 'comment' => $message->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -134,7 +139,6 @@
                         <a href="{{ route('items.chat.show', ['product' => $product->id]) }}">キャンセル</a>
                     </form>
                     @else
-                    {{-- 通常表示 --}}
                     <a href="{{ route('chat.message.edit', ['product' => $product->id, 'comment' => $message->id]) }}">編集</a>
                     <form action="{{ route('chat.message.destroy', ['product' => $product->id, 'comment' => $message->id]) }}" method="POST" style="display:inline;">
                         @csrf
