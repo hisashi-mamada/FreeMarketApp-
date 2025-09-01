@@ -139,7 +139,7 @@ body {
 
 .toppage-list a {
     display: inline-block;
-    width: 155px;
+    width: auto !important;
     height: auto;
     font-family: Inter;
     font-weight: 700;
@@ -151,7 +151,7 @@ body {
 }
 
 .toppage-list a:first-child {
-    margin-left: 90px;
+    margin:0 50px;
     color: #FF0000;
 
 }
@@ -1099,6 +1099,7 @@ select {
     width: 250px;
     height: 65px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-right: 60px;
@@ -1118,6 +1119,15 @@ select {
     margin-left: 20px;
     font-size: 36px;
 }
+
+.average-rating {
+    margin-top: 14px;
+    margin-left: 10px;
+    font-size: 30px;
+    color: #FFD700;
+    height: 40px;
+}
+
 
 .edit-profile {
     width: 310px;
@@ -1156,12 +1166,70 @@ select {
     width: 290px;
     text-align: center;
     font-size: 14px;
+    position: relative;
 }
 
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .product-card img {
     width: 100%;
     height: auto;
     object-fit: cover;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    z-index: 10;
+}
+
+.toppage-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 未読件数バッジ */
+.tab-badge {
+    --size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size);
+    height: var(--size);
+    padding: 0 ;
+    border-radius:50%;
+    background: #e60012;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 10px;
 }
 
 
@@ -1212,8 +1280,812 @@ main .auth-content .profile-user-info {
     top: -90px;
 }
 
+/*-----------------------chat.blade用-------------------------------------*/
 
-/* タブレット（768px〜850px）対応 */
+.chatpage {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.chatpage__sidebar {
+    width: 259px;
+    height: 902px;
+    background: #868686;
+    opacity: 1;
+    position: sticky;
+    top: 80px;
+    padding: 16px 18px;
+    box-sizing: border-box;
+    border-right: 1px solid #6f6f6f;
+    color: #fff;
+    overflow-y: auto;
+}
+
+.side__title {
+    width: 195px;
+    height: 36px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    color: #fff;
+    padding: 2px 6px;
+    margin-bottom: 90px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side__list {
+    width: 197px;
+    height: 0;
+    background: #EEEFEB;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 84px;
+    text-align: center;
+}
+
+.side__item {
+    display: inline-block;
+    width: 100%;
+    height: 29px;
+    background: #EEEFEB;
+    color: #000;
+    text-decoration: none;
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+
+    padding: 2px 8px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: background 0.2s;
+}
+
+.chat__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 32px;
+    background: #fff;
+    height: auto;
+    box-sizing: border-box;
+}
+
+/* 左側：アイコン＋タイトル */
+.chat__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 仮アバター（丸） */
+.chat__avatar {
+    width: 79px;
+    height: 79px;
+    border-radius: 50%;
+    background: #d9d9d9;
+}
+
+.chat__avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+/* タイトル */
+.chat__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+/* ボタン（既存の.btn--dangerに合わせて調整） */
+.btn--danger {
+    background: #f59898;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.btn--danger:hover {
+    background: #e97c7c;
+}
+
+.chat__endform {
+    margin-left: auto;
+}
+
+.chatpage__main {
+    flex: 1;
+    padding: 24px auto;
+    box-sizing: border-box;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    gap: 24px;
+    background: #fff;
+}
+
+.summary__thumb {
+    width: 203px;
+    height: 206px;
+    background: #d9d9d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 30px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.summary__ph{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.summary__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary__name {
+    font-size: 48px;
+    font-weight: 700;
+    color: #000;
+}
+
+.summary__price {
+    font-size: 36px;
+    font-weight: 400;
+    color: #444;
+}
+
+.chat__divider {
+    border: 2px solid #5f5f5f;
+    width: 100%;
+}
+
+.thread {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: #fff;
+}
+
+/* 共通：吹き出し1件分 */
+.msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+/* 相手：左寄せ */
+.msg--other {
+    align-self: flex-start;
+}
+
+/* 自分：右寄せ + テキスト右寄せ */
+.msg--me {
+    align-self: flex-end;
+    text-align: right;
+}
+
+/* 吹き出し本体 */
+.msg__bubble {
+    background: #d9d9d9;
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* テキスト */
+.msg__text {
+    margin: 0;
+    font-size: 16px;
+    color: #000;
+}
+
+/* 時間・操作など */
+.msg__meta {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.msg__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.msg--me .msg__head {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.msg__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #d9d9d9;
+}
+
+.chat__avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.msg__name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #111;
+}
+
+.composer {
+    padding: 12px 16px;
+    background: #fff;
+    position: sticky;
+    bottom: 0;
+}
+
+.composer__form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.composer__input {
+    flex: 1;
+    height: 44px;
+    padding: 8px 12px;
+    font-size: 20px;
+    font-weight: 700;
+    resize: none;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+}
+
+.composer__file {
+    width: 143px;
+    height: 44px;
+    padding: 6px 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FF5555;
+    border: 2px solid #FF5555;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.composer__file:hover {
+    background: #fef1f1;
+}
+
+.composer__sendbtn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.composer__sendicon {
+    width: 80px;
+    height: 61px;
+    display: block;
+}
+
+
+/*-----------------------chat.blade用-------------------------------------*/
+
+.chatpage {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.chatpage__sidebar {
+    width: 259px;
+    height: 902px;
+    background: #868686;
+    opacity: 1;
+    position: sticky;
+    top: 80px;
+    padding: 16px 18px;
+    box-sizing: border-box;
+    border-right: 1px solid #6f6f6f;
+    color: #fff;
+    overflow-y: auto;
+}
+
+.side__title {
+    width: 195px;
+    height: 36px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    color: #fff;
+    padding: 2px 6px;
+    margin-bottom: 90px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side__list {
+    width: 220px;
+    height: 0;
+    background: #EEEFEB;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 84px;
+    text-align: center;
+}
+
+.side__item {
+    display: inline-block;
+    width: 100%;
+    height: 29px;
+    background:#EEEFEB;
+    color: #000;
+    text-decoration: none;
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+
+    padding: 2px 8px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: background 0.2s;
+}
+
+.chat__header {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 32px;
+    background: #fff;
+    height: auto;
+    box-sizing: border-box;
+}
+
+/* 左側：アイコン＋タイトル */
+.chat__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 仮アバター（丸） */
+.chat__avatar {
+    width: 79px;
+    height: 79px;
+    border-radius: 50%;
+    background: #d9d9d9;
+}
+
+.chat__avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 画像を中央トリミング */
+    display: block;
+}
+/* タイトル */
+.chat__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #111;
+    margin:0;
+}
+
+.chat__complete {
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
+/* ボタン（既存の.btn--dangerに合わせて調整） */
+.btn--danger {
+    background: #f59898;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.btn--danger:hover {
+    background: #e97c7c;
+}
+
+.chat__endform {
+    margin-left: auto;
+}
+
+.chatpage__main {
+    flex: 1;
+    padding: 24px auto;
+    box-sizing: border-box;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    gap: 24px;
+    background: #fff;
+}
+
+.summary__thumb {
+    width: 203px;
+    height: 206px;
+    background: #d9d9d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 30px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.summary__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary__name {
+    font-size: 48px;
+    font-weight: 700;
+    color: #000;
+}
+
+.summary__price {
+    font-size: 36px;
+    font-weight: 400;
+    color: #444;
+}
+
+.chat__divider{
+    border: 2px solid #5f5f5f;
+    width: 100%;
+}
+
+.thread {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: #fff;
+}
+
+/* 共通：吹き出し1件分 */
+.msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+/* 相手：左寄せ */
+.msg--other {
+    align-self: flex-start;
+}
+
+/* 自分：右寄せ + テキスト右寄せ */
+.msg--me {
+    align-self: flex-end;
+    text-align: right;
+}
+
+/* 吹き出し本体 */
+.msg__bubble {
+    background: #d9d9d9;
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* テキスト */
+.msg__text {
+    margin: 0;
+    font-size: 16px;
+    color: #000;
+}
+
+/* 時間・操作など */
+.msg__meta {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.msg__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.msg--me .msg__head {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.msg__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #d9d9d9;
+}
+
+.msg__name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #111;
+}
+
+.composer {
+    padding: 12px 16px;
+    background: #fff;
+    position: sticky;
+    bottom: 0;
+}
+
+.composer__form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.composer__input {
+    flex: 1;
+    height: 44px;
+    padding: 8px 12px;
+    font-size: 20px;
+    font-weight: 700;
+    resize: none;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+}
+
+.composer__file {
+    width: 143px;
+    height: 44px;
+    padding: 6px 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FF5555;
+    border: 2px solid #FF5555;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.composer__file:hover {
+    background: #fef1f1;
+}
+
+.composer__sendbtn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.composer__sendicon {
+    width: 80px;
+    height: 61px;
+    display: block;
+}
+
+.formerror {
+    color: red;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.editing-hide {
+    display: none !important;
+}
+
+.msg__meta a,
+.msg__meta button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 1;
+    color: #5F5F5F;
+    border: none;
+    margin-left: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.msg__meta form {
+    display: inline;
+}
+
+.rating-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.rating-modal {
+    width: 598px;
+    height: 367px;
+    max-width: calc(100% - 32px);
+    background: #FDFCE6;
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+    --pad-x: 16px;
+    padding: var(--pad-x);
+}
+
+.rating-modal__title {
+    margin: 0 0 30px;
+    font-size:35px;
+    font-weight: 400;
+}
+
+.rating-modal__divider {
+    border: none;
+    border-top: 1px solid #000;
+    margin: 8px calc(var(--pad-x) * -1) 14px;
+}
+
+.rating-modal__subtitle {
+    margin: 0 0 30px;
+    color: #868686;;
+}
+
+.rating {
+    font-size: 100px;
+    line-height: 1;
+    display: inline-block;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    padding-bottom: 30px;
+}
+
+.rating input {
+    position: absolute;
+    left: -9999px;
+    /* ラジオは非表示 */
+}
+
+.rating .star {
+    float: right;
+    color: #D9D9D9;
+    cursor: pointer;
+    padding: 0 6px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+}
+
+.rating input:checked+.star,
+.rating input:checked+.star~.star {
+    color: #FFD23F;
+}
+
+/* ホバー時の見た目（操作感向上） */
+.rating .star:hover,
+.rating .star:hover~.star {
+    color: #FFD23F;
+}
+
+/* --- actions --- */
+.rating-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.rating-modal__submit {
+    background: #FF9DA0;
+    color: #fff;
+    border: 1px solid #E88486;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 400;
+    cursor: pointer;
+    width: 127px;
+    height: 49px;
+    font-size: 20px;
+}
+
+.rating-modal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #555;
+    border: 1px solid #DDD;
+    background: #FFF;
+    width: 127px;
+    height: 49px;
+    font-size: 20px;
+    text-align: center;
+}
+
+/*------------------タブレット（768px〜850px）対応------------------------- */
 
 @media screen and (max-width: 850px) and (min-width: 768px)
     {
@@ -1505,5 +2377,239 @@ main .auth-content .profile-user-info {
             white-space: nowrap;
             margin-bottom: 20px;
         }
+
+                .chatpage {
+                    display: grid;
+                    grid-template-columns: 170px 1fr;
+                    column-gap: 16px;
+                }
+
+                /* サイドバー */
+                .chatpage__sidebar {
+                    padding: 12px;
+                    border-right: 1px solid #eee;
+                    width: 200px;
+                }
+
+                .side__title {
+                    font-size: 14px;
+                    margin: 0 0 8px;
+                    line-height: 1.2;
+                }
+
+                .side__list {
+                    max-height: calc(100vh - 220px);
+                    overflow: auto;
+                }
+
+                .side__item {
+                    display: block;
+                    padding: 8px 10px;
+                    font-size: 14px;
+                    line-height: 1.2;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                /* メイン */
+                .chatpage__main {
+                    padding: 12px;
+                    min-width: 0;
+                }
+
+                /* ヘッダー */
+                .chat__header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                }
+
+                .chat__avatar {
+                    width: 40px;
+                    height: 40px;
+                    flex: 0 0 40px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                                }
+
+                .chat__title {
+                    font-size: 24px;
+                    line-height: 1.2;
+                    margin: 0;
+                    word-break: break-word;
+                    flex: 1 1 auto;
+                }
+
+                .trade-complete-btn {
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    line-height: 1;
+                }
+
+                /* 商品サマリー */
+                .summary {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 8px 0;
+                }
+
+                .summary__thumb {
+                    width: 96px;
+                    height: 100px;
+                    flex: 0 0 96px;
+                }
+
+                .summary__ph {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 8px;
+                }
+
+                .summary__name {
+                    font-size: 32px;
+                    margin: 0 0 6px;
+                }
+
+                .summary__price {
+                    font-size: 32px;
+                    margin: 0;
+                }
+
+                /* スレッド（高さ確保 & はみ出し防止） */
+                .thread {
+                    max-height: calc(100vh - 320px);
+                    /* ヘッダー/サマリー/コンポーザー分を差し引き */
+                    overflow: auto;
+                    padding-right: 4px;
+                    /* スクロールバー干渉防止 */
+                }
+
+                .msg__head {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-bottom: 6px;
+                }
+
+                .msg__avatar {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                }
+
+                .chat__avatar__img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+
+                .msg__name {
+                    font-size: 13px;
+                    line-height: 1.2;
+                }
+
+                .msg__bubble {
+                    font-size: 14px;
+                    line-height: 1.5;
+                    padding: 10px 12px;
+                    border-radius: 12px;
+                    max-width: 100%;
+                    word-break: break-word;
+                }
+
+                /* 入力欄（フッター固定風） */
+                .composer {
+                    position: sticky;
+                    bottom: 0;
+                    background: #fff;
+                    padding: 10px 0;
+                    border-top: 1px solid #eee;
+                }
+
+                .composer__form {
+                    display: flex;
+                    align-items: flex-end;
+                    gap: 8px;
+                }
+
+                .composer__input {
+                    flex: 1 1 auto;
+                    min-height: 44px;
+                    font-size: 14px;
+                    padding: 10px 12px;
+                    resize: vertical;
+                    max-height: 160px;
+                }
+
+                .composer__file {
+                    display: inline-block;
+                    padding: 8px 10px;
+                    font-size: 13px;
+                    line-height: 1;
+                    white-space: nowrap;
+                }
+
+                .composer__sendbtn {
+                    width: 44px;
+                    height: 44px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 10px;
+                    padding: 0;
+                }
+
+                .composer__sendicon {
+                    width: 22px;
+                    height: 22px;
+                    display: block;
+                }
+
+                /* 評価モーダル（はみ出し防止） */
+                .rating-modal-overlay {
+                    padding: 16px;
+                    /* 端末横幅が狭いときの余白 */
+                }
+
+                .rating-modal {
+                    width: min(520px, 92vw);
+                    padding: 16px;
+                    border-radius: 12px;
+                }
+
+                .rating-modal__title {
+                    font-size: 16px;
+                    margin: 0 0 6px;
+                }
+
+                .rating-modal__subtitle {
+                    font-size: 14px;
+                    margin: 0 0 12px;
+                }
+
+                .rating-modal__actions {
+                    display: flex;
+                    gap: 8px;
+                    justify-content: flex-end;
+                }
+
+                .rating-modal__submit,
+                .rating-modal__close {
+                    font-size: 14px;
+                    padding: 8px 12px;
+                    line-height: 1;
+                }
+
+
+                .rating .star {
+                    font-size: 22px;
+                    padding: 0 2px;
+                }
     }
 

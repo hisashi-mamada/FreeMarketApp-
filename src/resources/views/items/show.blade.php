@@ -4,7 +4,7 @@
 <div class="product-detail">
     <div class="product-image-area">
         <div class="product-detail-image">
-            <img src="{{ asset($product->image_url) }}" alt="商品画像">
+            <img src="{{ asset('storage/' . $product->image_url) }}" alt="商品画像">
 
         </div>
     </div>

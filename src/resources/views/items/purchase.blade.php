@@ -10,7 +10,8 @@
 
         <div class="purchase-left">
             <div class="product-summary">
-                <img src="{{ asset($product->image_url) }}" alt="商品画像" class="product-image">
+                <img src="{{ asset('storage/' . ltrim($product->image_url, '/')) }}" alt="商品画像" class="product-image">
+
                 <div class="product-info">
                     <h2>{{ $product->name }}</h2>
                     <p>¥{{ number_format($product->price) }}</p>
