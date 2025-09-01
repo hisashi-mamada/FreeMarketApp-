@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Comment;
 
 class MypageController extends Controller
 {
@@ -16,6 +17,10 @@ class MypageController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
         $tab = $request->query('tab', 'sell');
+
+        $unreadTotal = Comment::where('user_id', '!=', $user->id)
+            ->whereIn('product_id', $user->tradingProductsQuery()->select('products.id'))
+            ->count();
 
         $products = [];
         $purchases = [];
@@ -37,9 +42,7 @@ class MypageController extends Controller
                 ->map(function ($product) use ($user) {
                     $unreadCount = $product->comments
                         ->where('user_id', '!=', $user->id)
-                        ->where('is_read', false)
                         ->count();
-
                     $product->unread_count = $unreadCount;
                     return $product;
                 });
@@ -49,6 +52,6 @@ class MypageController extends Controller
         $allCategories = Category::pluck('name', 'id')->toArray();
         $averageRating = $user->roundedAverageRating();
 
-        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases', 'allCategories', 'chatItems', 'averageRating'));
+        return view('items.mypage', compact('user', 'profile', 'tab', 'products', 'purchases', 'allCategories', 'chatItems', 'averageRating', 'unreadTotal'));
     }
 }

@@ -139,7 +139,7 @@ body {
 
 .toppage-list a {
     display: inline-block;
-    width: 155px;
+    width: auto !important;
     height: auto;
     font-family: Inter;
     font-weight: 700;
@@ -1204,6 +1204,32 @@ select {
     text-align: center;
     line-height: 20px;
     z-index: 10;
+}
+
+.toppage-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 未読件数バッジ */
+.tab-badge {
+    --size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size);
+    height: var(--size);
+    padding: 0 ;
+    border-radius:50%;
+    background: #e60012;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 10px;
 }
 
 

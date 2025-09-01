@@ -37,7 +37,9 @@
     <div class="toppage-list">
         <a href="{{ url('/mypage?tab=sell') }}" class="{{ request('tab') !== 'buy' ? 'active' : '' }}">出品した商品</a>
         <a href="{{ url('/mypage?tab=buy') }}" class="{{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
-        <a href="{{ url('/mypage?tab=chat') }}" class="{{ request('tab') === 'chat' ? 'active' : '' }}">取引中の商品</a>
+        <a href="{{ url('/mypage?tab=chat') }}" class="{{ request('tab') === 'chat' ? 'active' : '' }}">取引中の商品@if(($unreadTotal ?? 0) > 0)
+            <span class="tab-badge">{{ $unreadTotal }}</span>
+            @endif</a>
 
     </div>
 
