@@ -18,6 +18,10 @@
 6. `php artisan db:seed` で本番用DBにデータ投入
 7. `php artisan storage:link` で画像データ挿入
 
+※権限エラーが出た際のコマンド
+`chown -R www-data:www-data storage bootstrap/cache`
+`chmod -R ug+rwx storage bootstrap/cache`
+
 ### テスト環境構築
 
 1. `.env`  をコピーして  `.env.testing`  を作成（phpunit 用テスト環境の設定）
