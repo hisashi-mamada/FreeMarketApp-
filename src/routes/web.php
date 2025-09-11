@@ -145,13 +145,6 @@ Route::get('/products/{product}/chat-test', function (\App\Models\Product $produ
     dd('到達OK', $product);
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/items/{product}/chat', [ChatController::class, 'store'])->name('chat.message.store');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::post('/items/{product}/chat/message', [ChatController::class, 'storeMessage'])->name('chat.message.store');
-});
 
 Route::middleware(['auth'])->group(function () {
     // 編集画面（フォーム表示）
@@ -176,4 +169,20 @@ Route::post('/items/{product}/chat/complete', [ChatController::class, 'complete'
 Route::middleware('auth')->group(function () {
     Route::post('/items/{product}/rate', [RatingController::class, 'store'])
         ->name('rate.store');
+});
+
+// メッセージ保存（本文・画像）
+Route::middleware('auth')->group(function () {
+    Route::post('/items/{product}/chat/message', [\App\Http\Controllers\ChatController::class, 'storeMessage'])
+        ->name('chat.message.store');
+});
+
+Route::middleware('auth')->group(function () {
+    // 既存: 表示
+    Route::get('/items/{product}/chat', [\App\Http\Controllers\ChatController::class, 'show'])
+        ->name('items.chat.show');
+
+    // 追加: サイドバー経由で移動する際に、今の本文ドラフトをセッション保存してから遷移
+    Route::post('/items/{product}/chat/nav/{to}', [\App\Http\Controllers\ChatController::class, 'nav'])
+        ->name('items.chat.nav');
 });

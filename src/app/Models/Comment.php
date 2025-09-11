@@ -14,6 +14,7 @@ class Comment extends Model
         'product_id',
         'body',
         'rating',
+        'image_path',
     ];
 
     protected $casts = [

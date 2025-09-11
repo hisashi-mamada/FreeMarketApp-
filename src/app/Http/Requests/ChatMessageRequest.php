@@ -21,18 +21,28 @@ class ChatMessageRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'message' => 'required|string|max:400',
-            'image' => 'nullable|file|mimes:jpeg,png',
+            // 画像が無いときは本文必須（= どちらか必須を片側だけで表現）
+            'message' => 'nullable|required_without:image|string|max:400',
+            // 画像は任意、来たら拡張子チェックのみ
+            'image'   => 'nullable|mimes:jpeg,png',
         ];
     }
 
-    public function messages()
+    public function attributes(): array
     {
         return [
-            'message.required' => '本文を入力してください',
+            'message' => '本文',
+            'image'   => '画像',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'message.required_without' => '本文を入力してください',
             'message.max' => '本文は400文字以内で入力してください',
             'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
         ];

@@ -8,15 +8,27 @@
     <aside class="chatpage__sidebar">
         <div class="side__title">その他の取引</div>
         <ul class="side__list">
-            @if(!$isBuyer)
-            @foreach($otherChatItems as $item)
+            @forelse($otherChatItems as $item)
             <li>
-                <a href="{{ route('items.chat.show', ['product' => $item->id]) }}" class="side__item">
+                @if(!$isTradeComplete)
+                {{-- 進行中：ドラフト保存しながら遷移（POST） --}}
+                <button type="submit"
+                    form="composerForm"
+                    formaction="{{ route('items.chat.nav', ['product' => $product->id, 'to' => $item->id]) }}"
+                    class="side__item side__item--button">
+                    {{ $item->name }}
+                </button>
+                @else
+                {{-- 完了：通常のGET遷移 --}}
+                <a href="{{ route('items.chat.show', ['product' => $item->id]) }}"
+                    class="side__item">
                     {{ $item->name }}
                 </a>
+                @endif
             </li>
-            @endforeach
-            @endif
+            @empty
+            <li class="side__empty">他の取引はありません</li>
+            @endforelse
         </ul>
     </aside>
 
@@ -86,7 +98,7 @@
                     </div>
 
                     <hr class="rating-modal__divider">
-                    
+
                     <div class="rating-modal__actions">
                         <button type="submit" class="rating-modal__submit">送信する</button>
                         <a class="rating-modal__close" href="{{ route('items.chat.show', ['product' => $product->id]) }}">閉じる</a>
@@ -168,9 +180,12 @@
             <div class="formerror">{{ $message }}</div>
             @enderror
 
-            <form class="composer__form" method="POST" action="{{ route('chat.message.store', ['product' => $product->id]) }}" enctype="multipart/form-data">
+            <form id="composerForm" class="composer__form"
+                method="POST"
+                action="{{ route('chat.message.store', ['product' => $product->id]) }}"
+                enctype="multipart/form-data">
                 @csrf
-                <textarea name="message" class="composer__input" rows="2" placeholder="取引メッセージを記入してください">{{ old('message') }}</textarea>
+                <textarea name="message" class="composer__input" rows="2" placeholder="取引メッセージを記入してください">{{ old('message', $draft ?? '') }}</textarea>
                 <label class="composer__file">
                     画像を追加
                     <input type="file" name="image" accept="image/*" hidden>

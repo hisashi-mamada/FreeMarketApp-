@@ -20,7 +20,10 @@ class ChatController extends Controller
         $product->load(['user']);
         $user = Auth::user();
 
-        $otherChatItems = $user->tradingProducts()->where('id', '!=', $product->id);
+        $otherChatItems = $user->tradingProductsQuery()
+            ->where('products.id', '!=', $product->id)   // 自分が出品 or 購入の全「取引中」から現在の商品を除外
+            ->orderByDesc('products.id')
+            ->get();
 
         // 出品者
         $sellerId = $product->user_id;
@@ -62,6 +65,8 @@ class ChatController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
+        $draft = session("chat_draft.{$product->id}") ?? '';
+
         return view('items.chat', compact(
             'product',
             'partner',
@@ -73,7 +78,8 @@ class ChatController extends Controller
             'detail',
             'showBuyerModal',
             'showSellerModal',
-            'buyerId'
+            'buyerId',
+            'draft'
         ));
     }
 
@@ -101,17 +107,18 @@ class ChatController extends Controller
         return redirect()->route('items.chat.show', ['product' => $product->id]);
     }
 
-    public function storeMessage(ChatMessageRequest $request, Product $product)
+    public function storeMessage(\App\Http\Requests\ChatMessageRequest $request, \App\Models\Product $product)
     {
         $validated = $request->validated();
 
         // 本文取得
-        $body = $validated['message'];
+        $body = $validated['message'] ?? '';
+
 
         // 画像があれば保存
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('product_images', 'public');
+            $imagePath = $request->file('image')->store('chat_images', 'public');
         }
 
         // コメント保存
@@ -122,7 +129,9 @@ class ChatController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->back()->withInput(); // 入力保持のため
+        session()->forget("chat_draft.{$product->id}");
+
+        return back();
     }
 
     public function edit(Product $product, Comment $comment)
@@ -185,5 +194,15 @@ class ChatController extends Controller
         return redirect()
             ->route('items.chat.show', ['product' => $product->id])
             ->with('force_rating_modal', true);
+    }
+
+    public function nav(\Illuminate\Http\Request $request, \App\Models\Product $product, \App\Models\Product $to)
+    {
+        // 今の画面で入力中の本文を保存（空文字でも保存してOK）
+        $draft = $request->input('message');
+        if ($draft !== null) {
+            session()->put("chat_draft.{$product->id}", $draft);
+        }
+        return redirect()->route('items.chat.show', ['product' => $to->id]);
     }
 }

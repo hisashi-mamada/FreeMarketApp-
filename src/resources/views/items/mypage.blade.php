@@ -20,10 +20,16 @@
         <div class="user-name">
             <h2>{{ $profile && $profile->nickname ? $profile->nickname : $user->name }}</h2>
 
-            @if(isset($averageRating))
-            <div class="average-rating">
-                {{ str_repeat('⭐', $averageRating) }}
+            @if(!is_null($averageRating))
+            @php
+            // ★の見た目（四捨五入で5段階）
+            $stars = (int) round($averageRating);
+            @endphp
+            <div class="average-rating" title="平均 {{ $averageRating }} / 5（{{ $totalCount }}件）">
+                <span class="stars">{{ str_repeat('★', $stars) . str_repeat('☆', 5 - $stars) }}</span>
             </div>
+            @else
+            <div class="average-rating --empty">評価はまだありません</div>
             @endif
 
         </div>
